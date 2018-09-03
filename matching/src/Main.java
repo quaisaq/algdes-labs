@@ -93,7 +93,7 @@ public class Main {
             return nextPreference == n ? NO_PROPOSALS : nextPreference;
         };
         
-        Function<Integer, Integer, Integer> getFemalePreference = (femaleIndex, maleIndex) -> {
+        BiFunction<Integer, Integer, Integer> getFemalePreference = (femaleIndex, maleIndex) -> {
             return Arrays.asList(femalePreferences[femaleIndex]).indexOf(maleIndex);
         };
         
