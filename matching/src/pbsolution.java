@@ -167,7 +167,6 @@ public class pbsolution
 		int n = 0;		// number of preferences
 		
 		int arraysCurSize = names.size();
-		int prefsCurSize = prefs.size();
 
 		while(sc.hasNext())
 		{
