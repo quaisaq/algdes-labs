@@ -9,6 +9,9 @@ public class Main {
     private static int[][] malePreferences;
     private static int[][] femalePreferences;
 
+    private static int[][] malePreferenceList;
+    private static int[][] femalePreferenceList;
+
     public static void main(String[] args) {
         if (args.length == 0) {
             System.out.println("Please supply the filename to parse");
@@ -18,14 +21,13 @@ public class Main {
         nameMap = new HashMap<>();
 
         int n  = parseInput(args[0]);
-
         int[] output = galeShapley(n);
         writeOutput(output);
         System.exit(0);
     }
 
     public static int[] getMaleList(int maleId) {
-        return malePreferences[getMaleIndex(maleId)];
+        return malePreferenceList[getMaleIndex(maleId)];
     }
     
 	public static int getMaleIndex(int maleId) {
@@ -37,7 +39,7 @@ public class Main {
     }
     
     public static int[] getFemaleList(int femaleId) {
-        return femalePreferences[getFemaleIndex(femaleId)];
+        return femalePreferenceList[getFemaleIndex(femaleId)];
     }
 	
 	public static int getFemaleIndex(int femaleId) {
@@ -56,7 +58,7 @@ public class Main {
 		
 		try {
 			Scanner sc = new Scanner(new File(filename));
-			sc.useDelimiter("\r\n");
+			sc.useDelimiter("\n");
 			
 			while (sc.hasNext()) {
 				String line = sc.next();
@@ -69,7 +71,10 @@ public class Main {
 					n = Integer.parseInt(line.split("=")[1]);
 					
 					malePreferences = new int[n][n];
-					femalePreferences = new int[n][n];
+                    femalePreferences = new int[n][n];
+                    
+                    malePreferenceList = new int[n][n];
+                    femalePreferenceList = new int[n][n];
 					
 					continue;
 				}
@@ -84,18 +89,24 @@ public class Main {
 					int num = Integer.parseInt(theNumber);
 					
 					int[] preferences = new int[n];
-					
+                    int[] preferencesList = new int[n];
+                    
 					for (int i = 0; i < n; i++) {
 						int prefers = Integer.parseInt(words[i + 1]);
 						int prefersIndex = num % 2 == 0 ? getMaleIndex(prefers) : getFemaleIndex(prefers);
-						preferences[i] = prefersIndex;
+                        preferences[prefersIndex] = i;
+                        preferencesList[i] = prefersIndex;
 					}
 					
 					if (num % 2 == 0) {
-						femalePreferences[getFemaleIndex(num)] = preferences;
+                        int femaleIndex = getFemaleIndex(num);
+                        femalePreferences[femaleIndex] = preferences;
+                        femalePreferenceList[femaleIndex] = preferencesList;
 					}
 					else {
-						malePreferences[getMaleIndex(num)] = preferences;
+                        int maleIndex = getMaleIndex(num);
+                        malePreferences[maleIndex] = preferences;
+                        malePreferenceList[maleIndex] = preferencesList;
 					}
 				}
 				else {
@@ -103,7 +114,7 @@ public class Main {
 					String name = words[1];
 					nameMap.put(num, name);
 				}
-			}
+            }
 			return n;
 		}
 		catch (Exception ex) {
@@ -149,18 +160,12 @@ public class Main {
             }
             
             int nextPreference = malePreferencePointers[maleIndex];
-            int nextFemale = malePreferences[maleIndex][nextPreference];
+            int nextFemale = malePreferenceList[maleIndex][nextPreference];
             return nextPreference == n ? NO_PROPOSALS : nextFemale;
         };
         
         BiFunction<Integer, Integer, Integer> getFemalePreference = (femaleIndex, maleIndex) -> {
-            for (int i = 0; i < femalePreferences[femaleIndex].length; i++) {
-                if (femalePreferences[femaleIndex][i] == maleIndex) {
-                    return i;
-                }
-            }
-
-            throw new IndexOutOfBoundsException("YOU SHALL NOT PARSE!");
+            return femalePreferences[femaleIndex][maleIndex];
         };
         
         int freeMan = NO_FREE_MEN;
