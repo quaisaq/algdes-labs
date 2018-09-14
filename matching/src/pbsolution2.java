@@ -132,8 +132,9 @@ public class pbsolution2
         // New array default value = 0
         // Same size as men + women for simplicity
         int[] man_cur_pref_indexs = new int[peopleCount];
+        int singleMen = this.n;
 
-        for(int i = 0; i < this.n; i++){
+        while(singleMen > 0){
             for(int man_id = 0; man_id < peopleCount; man_id += 2){
                 if(DEBUG) System.out.println("Processing man_id: " + man_id);
 
@@ -154,6 +155,7 @@ public class pbsolution2
                     // Set woman and man to proposed
                     proposedTo[man_new_woman_id] = man_id;
                     proposedTo[man_id] = man_new_woman_id;
+                    singleMen--;
 
                 } else {                        // Woman already proposed. Challenge
                     if(isNewManBetter(man_new_woman_id, woman_proposed_to, man_id)){
