@@ -3,7 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
-public class pbsolution2
+public class GroupI
 {
 	private static boolean DEBUG = false;
 	private static boolean ShowRunTime = true;
@@ -31,7 +31,7 @@ public class pbsolution2
     private int[][] preferences_ordered;    // Ordered preference list containing ids of the other sex
     private int n;
 
-    public pbsolution2(String filename){
+    public GroupI(String filename){
         // Get file scanner for input file
         Scanner sc = getFileScanner(filename);
 
