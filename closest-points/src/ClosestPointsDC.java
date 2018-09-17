@@ -1,7 +1,6 @@
 import java.util.*;
 import java.util.regex.*;
 import java.io.*;
-import javafx.util.*;
 
 public class ClosestPointsDC {
     private final static boolean DEBUG = false;
@@ -107,29 +106,29 @@ public class ClosestPointsDC {
         }
 
         //otherwise
-        Pair<List<PbPoint>, List<PbPoint>> xLists = splitList(sortedX);
+        DoubleList xLists = splitList(sortedX);
 
-        List<PbPoint> Qx = xLists.getKey(); 
-        List<PbPoint> Rx = xLists.getValue(); 
+        List<PbPoint> Qx = xLists.getFirst(); 
+        List<PbPoint> Rx = xLists.getSecond(); 
 
         double dist1 = getClosestPointsRecursive(Qx, sortedY);
         double dist2 = getClosestPointsRecursive(Rx, sortedY);
 
         double d = Math.min(dist1, dist2);
-        double lx = Q.get(Q.size() - 1).getX();
+        double lx = Qx.get(Qx.size() - 1).getX();
 
         HashSet<PbPoint> S = new HashSet<>();
 
-        for (int i = Q.size() - 1; i >= 0; i--) {
-            PbPoint point = Q.get(i);
+        for (int i = Qx.size() - 1; i >= 0; i--) {
+            PbPoint point = Qx.get(i);
             if (lx - point.getX() > d) {
                 break;
             }
             S.add(point);
         }
 
-        for (int i = 0; i < R.size(); i++) {
-            PbPoint point = R.get(i);
+        for (int i = 0; i < Rx.size(); i++) {
+            PbPoint point = Rx.get(i);
             if (point.getX() - lx > d) {
                 break;
             }
@@ -158,10 +157,10 @@ public class ClosestPointsDC {
         return d;
     }
 
-    private static Pair<List<PbPoint>, List<PbPoint>> splitList(List<PbPoint> points) {
+    private static DoubleList splitList(List<PbPoint> points) {
         List<PbPoint> half1 = points.subList(0, points.size() / 2);
         List<PbPoint> half2 = points.subList(points.size() / 2, points.size());;
-        return new Pair<List<PbPoint>, List<PbPoint>>(half1, half2);
+        return new DoubleList(half1, half2);
     }
 
 
@@ -218,6 +217,24 @@ public class ClosestPointsDC {
         double yDist = Math.abs(p1.getY() - p2.getY());
         double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
         return distance;
+    }
+
+    static class DoubleList {
+        private List<PbPoint> l1;
+        private List<PbPoint> l2;
+
+        public DoubleList(List<PbPoint> l1, List<PbPoint> l2) {
+            this.l1 = l1;
+            this.l2 = l2;
+        }
+
+        public List<PbPoint> getFirst() {
+            return l1;
+        }
+
+        public List<PbPoint> getSecond() {
+            return l2;
+        }
     }
 
     static class PbPoint{
