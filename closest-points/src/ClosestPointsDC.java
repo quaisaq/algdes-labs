@@ -109,11 +109,11 @@ public class ClosestPointsDC {
         //otherwise
         Pair<List<PbPoint>, List<PbPoint>> xLists = splitList(sortedX);
 
-        List<PbPoint> Q = xLists.getKey(); 
-        List<PbPoint> R = xLists.getValue(); 
+        List<PbPoint> Qx = xLists.getKey(); 
+        List<PbPoint> Rx = xLists.getValue(); 
 
-        double dist1 = getClosestPointsRecursive(Q, sortedY);
-        double dist2 = getClosestPointsRecursive(R, sortedY);
+        double dist1 = getClosestPointsRecursive(Qx, sortedY);
+        double dist2 = getClosestPointsRecursive(Rx, sortedY);
 
         double d = Math.min(dist1, dist2);
         double lx = Q.get(Q.size() - 1).getX();
