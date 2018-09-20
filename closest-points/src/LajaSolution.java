@@ -84,7 +84,7 @@ public class LajaSolution {
             for (int i = 0; i < length; i++) {
                 PbPoint p1 = sortedX.get(i);
                 for (int j = i + 1; j < length; j++) {
-                    PbPoint p2 = sortedX.get(i);
+                    PbPoint p2 = sortedX.get(j);
                     
                     double tempDist = calculateDistance(p1, p2);
                     if (tempDist < dist) {
