@@ -32,7 +32,7 @@ public class PbSolution{
         
         // Program run duration in seconds
         double runDuration = (timeEnd - timeStart) * 0.001;
-        if(ShowRunTime) System.err.printf("\nProgram complete in: %.3f seconds\n\n", runDuration);
+        if(ShowRunTime) System.err.printf("Program complete in: %.3f seconds\n\n", runDuration);
     }
 
 
@@ -108,10 +108,8 @@ public class PbSolution{
             dSplitMaxX++;
         }
 
-        ArrayList<DataPoint> Sy = new ArrayList<DataPoint>(Px.subList(dSplitMinX, dSplitMaxX));
+        ArrayList<DataPoint> Sy = sortArrayY(new ArrayList<DataPoint>(Px.subList(dSplitMinX, dSplitMaxX)));
         
-        // Sy = sortArrayY(Sy);
-
         int SSize = Sy.size();
         for(int i = 0; i < SSize; i++){
             for(int j = i+1; j < j + 15 && j < SSize; j++){
