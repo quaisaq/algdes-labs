@@ -58,7 +58,6 @@ public class PbSolution{
 
 
     private static double getClosestPoints(ArrayList<DataPoint> datapoints){
-        int dpsize = datapoints.size();
         ArrayList<DataPoint> Px = sortArrayX((ArrayList<DataPoint>)datapoints.clone());
         ArrayList<DataPoint> Py = sortArrayY((ArrayList<DataPoint>)datapoints.clone());
 
@@ -96,11 +95,11 @@ public class PbSolution{
         int lxIndex = Qx.size()-1;
         double lx = Px.get(lxIndex).getX();
 
-        int minXValue = (int)(lx - d);
-        int maxXValue = (int)(lx + d);
+        double minXValue = lx - d;
+        double maxXValue = lx + d;
 
-        int dSplitMinX, dSplitMaxX;
-        dSplitMinX = dSplitMaxX = lxIndex;
+        int dSplitMinX = lxIndex;
+        int dSplitMaxX = lxIndex;
 
         while(dSplitMinX > 0 && Px.get(dSplitMinX).getX() > minXValue){
             dSplitMinX--;
@@ -110,12 +109,14 @@ public class PbSolution{
         }
 
         ArrayList<DataPoint> Sy = new ArrayList<DataPoint>(Px.subList(dSplitMinX, dSplitMaxX));
+        
+        // Sy = sortArrayY(Sy);
 
         int SSize = Sy.size();
         for(int i = 0; i < SSize; i++){
-            for(int j = i+1; j < j + SSize && j < SSize; j++){
+            for(int j = i+1; j < j + 15 && j < SSize; j++){
                 double tmpDist = calculateDistance(Sy.get(i), Sy.get(j));
-                if(tmpDist < d){
+                if(tmpDist < d) {
                     d = tmpDist;
                 }
             }
