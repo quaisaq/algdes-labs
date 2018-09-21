@@ -3,7 +3,7 @@ import java.util.regex.*;
 import java.io.*;
 
 
-public class PbSolution{
+public class GroupI{
     private final static boolean DEBUG = false;
     private final static boolean ShowRunTime = true;
 

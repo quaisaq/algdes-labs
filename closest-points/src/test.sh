@@ -39,7 +39,7 @@ fi
 # Create outputs
 #for var in "$@"
 facitfile="$DATADIR/closest-pair-out.txt"
-for inputfile in $DATADIR/*-tsp.txt; do
+time for inputfile in $DATADIR/*-tsp.txt; do
 	echo "Running on $inputfile"
 	if [ $facitfile = $inputfile ]; then
 		echo "Skipping facit file: $facitfile"
