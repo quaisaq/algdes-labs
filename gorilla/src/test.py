@@ -37,9 +37,9 @@ def main(file1, file2):
     filesIdentical = compareFileData(file1Data, file2Data)
 
     if filesIdentical:
-        print("Files were identical!")
+        print("%s and %s are identical!" % (file1, file2))
     else:
-        print("Files were not identical")
+        print("%s and %s are not identical" % (file1, file2))
 
 
 def parseFile(filename):
