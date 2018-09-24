@@ -22,7 +22,7 @@ public class Main {
         parseCost(args[0]);
         parseInput(args[1]);
         for(int i = 0; i < sequences.length; i++){
-            for(int j = i+1; sequences.length; j++){
+            for(int j = i+1; j < sequences.length; j++){
                 memoizer = new int[sequences[i].length][sequences[j].length];
                 for(int n = 0; n < memoizer.length; n++){
                     Arrays.fill(memoizer[n], -9999);
@@ -117,7 +117,7 @@ public class Main {
         if(i==0 || j==0){
             return d;
         } else {
-            int val1 = cost[s1[i]][s2[j]] + algrec(x, y, i-1, j-1);
+            int val1 = costs[s1[i]][s2[j]] + algrec(x, y, i-1, j-1);
             int val2 = d + algrec(x, y, i-1, j);
             int val3 = d + algrec(x, y, i, j-1);
             memoizer[i][j] = Math.min(val1, Math.min(val2, val3));
@@ -147,7 +147,7 @@ public class Main {
 
         for(int i = 1; i < m; i++){
             for(int j = 1; j < n; j++){
-                int val1 = cost[s1[i]][s2[j]] + memoizer[i-1][j-1];
+                int val1 = costs[s1[i]][s2[j]] + memoizer[i-1][j-1];
                 int val2 = d + memoizer[i-1][j];
                 int val3 = d + memoizer[i][j-1]; 
                 memoizer[i][j] = Math.min(val1, Math.min(val2, val3));
