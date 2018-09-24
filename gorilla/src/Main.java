@@ -4,6 +4,7 @@ import java.util.*;
 public class Main {
     // const
     private static final int TRANSFORMATION = -1;
+	private static final int DEFAULT_MEMOIZER_VALUE = -9999;
 
     // data
     private static char[][] sequences;
@@ -23,7 +24,7 @@ public class Main {
             for(int j = i+1; j < sequences.length; j++){
                 memoizer = new int[sequences[i].length][sequences[j].length];
                 for(int n = 0; n < memoizer.length; n++){
-                    Arrays.fill(memoizer[n], -9999);
+                    Arrays.fill(memoizer[n], DEFAULT_MEMOIZER_VALUE);
                 }
                 Result result = alg(i, j);
                 printOutput(result);
@@ -148,7 +149,7 @@ public class Main {
 
         char[] s1 = sequences[x];
         char[] s2 = sequences[y];
-        if(memoizer[i][j] != -9999){
+        if(memoizer[i][j] != DEFAULT_MEMOIZER_VALUE){
             return memoizer[i][j];
         }
         if(i==0 || j==0){
