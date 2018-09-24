@@ -18,6 +18,8 @@ public class Main {
     }
 
     public static void parseCost(String file) {
+        // * -1 
+        // Keep it simple stupid
         throw new RuntimeException("Not implemented");
     }
 
