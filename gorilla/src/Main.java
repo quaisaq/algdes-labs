@@ -93,9 +93,18 @@ public class Main {
         }
     }
 
-    public static void parseCost(String file) {
+    public static void parseCost(String filepath) {
+        if(DEBUG) System.out.printf("Opening file %s\n", filepath);
+
+        // Does file exist?
+		File f = new File(filepath);
+		if(!f.exists()){
+			System.out.printf("File '%s' does not exist. Skipping...\n", filepath);
+			System.exit(-1);
+        }
+        
         try {
-            Scanner sc = new Scanner(new File(file));
+            Scanner sc = new Scanner(f);
             sc.useDelimiter("\r\n");
             String[] charStrings = null;
             // Find chars
@@ -124,7 +133,8 @@ public class Main {
                 costs[i++] = cost;
             }
         } catch(FileNotFoundException e) {
-            throw new RuntimeException("Dont wanna deal with it");
+            System.out.printf("Could not open file '%s'\nError:\n%s", filepath, e);
+            System.exit(-1);
         }
     }
 
