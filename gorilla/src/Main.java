@@ -12,7 +12,7 @@ public class Main {
     private static int N;
     private static int[][] costs;
 
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     public static void main(String[] args) {
         assert args.length == 2;
@@ -104,7 +104,7 @@ public class Main {
 		private String sequence2;
 		private int cost;
 		private String name1;
-		private string name2;
+		private String name2;
 		
 		public void setSequence1(String sequence1) {
 			this.sequence1 = sequence1;
