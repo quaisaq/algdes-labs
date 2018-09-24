@@ -1,4 +1,8 @@
 public class Main {
+    // const
+    private static final int TRANSFORMATION = -1;
+
+    // data
     private static char[][] sequences;
     private static String[] names;
     private static int[][] memoizer;
@@ -9,8 +13,8 @@ public class Main {
         assert args.length == 2;
         parseCost(args[0]);
         parseInput(args[1]);
-        alg();
-        printOutput();
+        Result result = alg();
+        printOutput(result);
     }
 
     public static void parseInput(String file) {
@@ -18,16 +22,21 @@ public class Main {
     }
 
     public static void parseCost(String file) {
-        // * -1 
+        // cost * TRANSFORMATION 
         // Keep it simple stupid
         throw new RuntimeException("Not implemented");
     }
 
-    public static void alg() {
+    public static Result alg() {
         throw new RuntimeException("Not implemented");
     }
 
-    public static void printOutput() {
+    public static void printOutput(Result result) {
+        // output * TRANSFORMATION
         throw new RuntimeException("Not implemented");
+    }
+
+    public static class Result {
+
     }
 }
