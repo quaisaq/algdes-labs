@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Main {
     // const
     private static final int TRANSFORMATION = -1;
@@ -10,15 +12,18 @@ public class Main {
     private static int[][] costs;
     private static int d;
 
+
     public static void main(String[] args) {
         assert args.length == 2;
         parseCost(args[0]);
         parseInput(args[1]);
         for(int i = 0; i < sequences.length; i++){
             for(int j = i+1; sequences.length; j++){
-                char[] s1 = sequences[i];
-                char[] s2 = sequences[j];
-                Result result = alg(s1, s2);
+                memoizer = new int[sequences[i].length][sequences[j].length];
+                for(int n = 0; n < memoizer.length; n++){
+                    Arrays.fill(memoizer[n], -9999);
+                }
+                Result result = alg(i, j);
                 printOutput(result);
             }
         }
@@ -35,7 +40,39 @@ public class Main {
         throw new RuntimeException("Not implemented");
     }
 
-    public static Result alg(char[] s1, char[] s2) {
+
+
+    //skal huske a initialisere memoizer = new int[m+1][n+1];
+    public static int algrec(int x, int y, int i, int j){
+        /*Result result = new Result();
+        result.setName1(names[x]);
+        result.setName2(names[y]);*/
+
+        char[] s1 = sequences[x];
+        char[] s2 = sequences[y];
+        if(memoizer[i][j] != -9999){
+            return memoizer[i][j];
+        }
+        if(i==0 || j==0){
+            return d;
+        } else {
+            int val1 = cost[s1[i]][s2[j]] + algrec(x, y, i-1, j-1);
+            int val2 = d + algrec(x, y, i-1, j);
+            int val3 = d + algrec(x, y, i, j-1);
+            memoizer[i][j] = Math.min(val1, Math.min(val2, val3))
+
+            return memoizer[i][j];
+        }
+    
+        //return result;
+    }
+    public static Result alg(int x, int y) {
+        Result result = new Result();
+        result.setName1(names[x]);
+        result.setName2(names[y]);
+
+        char[] s1 = sequences[x];
+        char[] s2 = sequences[y];
         int m = s1.length;
         int n = s2.length;
         memoizer = new int[m+1][n+1];
@@ -55,7 +92,9 @@ public class Main {
                 memoizer[i][j] = Math.min(val1, Math.min(val2, val3));
             }
         }
-        return memoizer[m][n];
+        result.setCost(memoizer[m][n]);
+        
+        return result;
     }
 
     public static void printOutput(Result result) {
@@ -69,7 +108,7 @@ public class Main {
 		private String sequence2;
 		private int cost;
 		private String name1;
-		private string name2;
+		private String name2;
 		
 		public void setSequence1(String sequence1) {
 			this.sequence1 = sequence1;
