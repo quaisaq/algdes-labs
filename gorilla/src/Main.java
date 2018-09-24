@@ -32,11 +32,56 @@ public class Main {
     }
 
     public static void printOutput(Result result) {
-        // output * TRANSFORMATION
-        throw new RuntimeException("Not implemented");
+		System.out.printf("%s--%s: %d%n", result.getName1(), result.getName2(), result.getCost() * TRANSFORMATION);
+		System.out.printf("%s%n", result.getSequence1());
+		System.out.printf("%s%n", result.getSequence2());
     }
 
     public static class Result {
-
+		private String sequence1;
+		private String sequence2;
+		private int cost;
+		private String name1;
+		private string name2;
+		
+		public void setSequence1(String sequence1) {
+			this.sequence1 = sequence1;
+		}
+		
+		public void setSequence2(String sequence2) {
+			this.sequence2 = sequence2;
+		}
+		
+		public void setCost(int cost) {
+			this.cost = cost;
+		}
+		
+		public void setName1(String name1) {
+			this.name1 = name1;
+		}
+		
+		public void setName2(String name2) {
+			this.name2 = name2;
+		}
+		
+		public String getSequence1() {
+			return sequence1;
+		}
+		
+		public String getSequence2() {
+			return sequence2;
+		}
+		
+		public int getCost() {
+			return cost;
+		}
+		
+		public String getName1() {
+			return name1;
+		}
+		
+		public String getName2() {
+			return name2;
+		}
     }
 }
