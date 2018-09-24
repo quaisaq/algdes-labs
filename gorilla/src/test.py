@@ -93,7 +93,15 @@ def compareFileData(file1Data, file2Data):
 
     for key, value in file1Data.items():
         resultStruct1 = value
-        resultStruct2 = file2Data[key]
+        resultStruct2 = None
+
+        # Check if the corresponding key is in file2Data. If not, try flipping stuff around
+        if key in file2Data:
+            resultStruct2 = file2Data[key]
+        elif getAlternateKey(key) in file2Data:
+            resultStruct2 = file2Data[getAlternateKey(key)]
+        elif DEBUG:
+            print("Could not find %s in file2Data" % key)
 
         if not compareResultStruct(resultStruct1, resultStruct2):
             filesIdentical = False
@@ -107,12 +115,36 @@ def compareFileData(file1Data, file2Data):
     return filesIdentical
 
 
+def getAlternateKey(key):
+    keyparts = key.split("--")
+    newKey = ("%s--%s" % (keyparts[1], keyparts[0]))
+    return newKey
 
-def compareResultStruct(struct1, struct2):
-    return struct1 == struct2
+def compareResultStruct(s1, s2):
+    if s1 is None or s2 is None:
+        return False
+
+    if not s1.value == s2.value:
+        return False
+    
+    # This should consider str1 == str1, str2 == str2, name == name
+    if s1 == s2:
+        return True
+    
+    # Check str1 and 2 and set equally
+    if s1.str1 == s2.str1 and s1.str2 == s2.str2:
+        return True
+    
+    # Check if str are swapped
+    if (s1.str1 == s2.str2 and s1.str2 == s2.str1) or (s1.str2 == s2.str1 and s1.str1 == s2.str2):
+        return True
+
 
 def printStruct(struct):
-    print("%s: %s\n%s\n%s\n" % (struct.name, struct.value, struct.str1, struct.str2))
+    if struct is None:
+        print("Stuct is None")
+    else:
+        print("%s: %s\n%s\n%s\n" % (struct.name, struct.value, struct.str1, struct.str2))
 
 
 
