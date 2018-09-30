@@ -12,13 +12,13 @@ public class Main {
     private static int[][] memoizer;
     private static int N;
     private static int[][] costs;
-    private static int d;
+    private static int d = 4; //We should rename this to gapCost or something
 
-    private static boolean DEBUG = false;
+    private static boolean DEBUG = true;
 
     public static void main(String[] args) {
         assert args.length == 2;
-        parseCost(args[0]);
+        parseCost2(args[0]);
         parseInput(args[1]);
         for(int i = 0; i < sequences.length; i++){
             for(int j = i+1; j < sequences.length; j++){
@@ -64,15 +64,22 @@ public class Main {
                         speciesNames.add(currentSpeciesName);
                         speciesGenomes.add(currentGenome);
                         currentSpeciesIndex++;
+                        currentSpeciesName = "";
                     }
                     
                     currentSpeciesName = line.substring(1).split(" ")[0];
+
+                    System.out.printf("New species: %s%n", currentSpeciesName);
+
                     currentGenome = "";
                 } else {
                     // Same species, append to currentGenome
                     currentGenome += line;
                 }
             }
+
+            speciesNames.add(currentSpeciesName);
+            speciesGenomes.add(currentGenome);
 
             // Convert temporary ArrayLists to arrays.
             N = speciesNames.size();
@@ -122,7 +129,7 @@ public class Main {
             int length = charStrings.length;
             costs = new int[length][length];
             // Find cost
-            int i = 0;
+            int i = 'A';
             while (i < length) {
                 String[] costStrings = sc.next().trim().split(" ");
                 int cost[] = Arrays.stream(costStrings)
@@ -132,6 +139,89 @@ public class Main {
                         .map(x -> x * TRANSFORMATION)
                         .toArray();
                 costs[i++] = cost;
+            }
+        } catch(FileNotFoundException e) {
+            System.out.printf("Could not open file '%s'\nError:\n%s", filepath, e);
+            System.exit(-1);
+        }
+    }
+
+    public static void parseCost2(String filepath) {
+        if(DEBUG) System.out.printf("Opening file %s\n", filepath);
+
+        // Does file exist?
+		File f = new File(filepath);
+		if(!f.exists()){
+			System.out.printf("File '%s' does not exist. Skipping...\n", filepath);
+			System.exit(-1);
+        }
+        
+        try {
+            Scanner sc = new Scanner(f);
+            sc.useDelimiter("\r\n");
+            char[] chars = null;
+            int length = -1;
+
+            // Find chars
+            while (sc.hasNext()) {
+				String line = sc.next();
+				
+				// Skip on #
+                if(line.startsWith("#")) continue;
+
+                String[] charStrings = line.trim().split("  ");
+                length = charStrings.length;
+                chars = new char[length];
+                for (int i = 0; i < charStrings.length; i++) {
+                    chars[i] = charStrings[i].trim().charAt(0);
+                }
+                break;
+            }
+            
+            char greatestChar = 0; //we should always get a greater char than this
+            for (int i = 0; i < length; i++) {
+                if (chars[i] > greatestChar) {
+                    greatestChar = chars[i];
+                }
+            }
+
+            costs = new int[greatestChar + 1][greatestChar + 1];
+
+            for (int i = 0; i < greatestChar + 1; i++) {
+                Arrays.fill(costs[i], -99);
+            }
+
+            // Find cost
+            for (int i = 0; i < length; i++) {
+                String[] costStrings = sc.next().trim().split(" ");
+                char c = costStrings[0].trim().charAt(0);
+
+                int k = 1;
+                for (int j = 0; j < length; j++, k++) {
+                    if (costStrings[k].trim().isEmpty()) {
+                        j--;
+                        continue;
+                    }
+                    int cost = Integer.parseInt(costStrings[k]);
+                    cost = cost * TRANSFORMATION;
+                    costs[c][chars[j]] = cost;
+                }
+            }
+
+            if (DEBUG) {
+                System.out.println("Costs:");
+                System.out.printf("%9s", " ");
+                for (int i = 65; i <= greatestChar; i++) {
+                    System.out.printf("[%3c]", (char)i);
+                }
+                System.out.printf("%n");
+                for (int i = 60; i < costs.length; i++) {
+                    System.out.printf("%3d [%c]: [", i, (char)i);
+                    for (int j = 65; j < costs[i].length; j++) {
+                        System.out.printf(j == 65 ? "%3d" : ", %3d", costs[i][j]);
+                    }
+                    System.out.printf("]%n");
+                }
             }
         } catch(FileNotFoundException e) {
             System.out.printf("Could not open file '%s'\nError:\n%s", filepath, e);
@@ -183,17 +273,112 @@ public class Main {
             memoizer[0][j] = d;
         }
 
-        for(int i = 1; i < m; i++){
-            for(int j = 1; j < n; j++){
-                int val1 = costs[s1[i]][s2[j]] + memoizer[i-1][j-1];
+        if (DEBUG) {
+            System.out.println("Algorithm running...");
+        }
+
+        for(int i = 1; i <= m; i++){
+            for(int j = 1; j <= n; j++){
+                //LASSE: Is it okay to always pay a prize, aren't same-match supposed to cost 0?
+                int mismatchCost = s1[i-1] == s2[j-1] ? 0 : costs[s1[i-1]][s2[j-1]];
+                int val1 = mismatchCost + memoizer[i-1][j-1];
                 int val2 = d + memoizer[i-1][j];
                 int val3 = d + memoizer[i][j-1]; 
-                memoizer[i][j] = Math.min(val1, Math.min(val2, val3));
+                int smallest = Math.min(val1, Math.min(val2, val3));
+
+                if (DEBUG) {
+                    // if (val1 == smallest) {
+                    //     System.out.println("step 1");
+                    // }
+                    // else if (val2 == smallest) {
+                    //     System.out.println("step 2");
+                    // }
+                    // else { //if (val3 == smallest)
+                    //     System.out.println("step 3");
+                    // }
+                    System.out.printf("i: %d, j: %d%n", i, j);
+                    System.out.printf("mism: %d%n", mismatchCost);
+                    System.out.printf("val1: %d%n", val1);
+                    System.out.printf("val2: %d%n", val2);
+                    System.out.printf("val3: %d%n", val3);
+                    System.out.printf("memo: [%3d, %3d]%n", memoizer[i-1][j-1], memoizer[i-1][j]);
+                    System.out.printf("      [%3d, %3d]%n", memoizer[i][j-1], memoizer[i][j]);
+                    System.out.printf("%n");
+                }
+
+                memoizer[i][j] = smallest;
             }
         }
         result.setCost(memoizer[m][n]);
         
+        if (DEBUG) {
+            System.out.println("Algorithm done");
+        }
+
+        setResultSequences(x, y, memoizer, result);
+
         return result;
+    }
+
+    private static void setResultSequences(int x, int y, int[][] memoizer, Result result) {
+        char[] s1 = sequences[x];
+        char[] s2 = sequences[y];
+        int i = s1.length;
+        int j = s2.length;
+
+        int mismatchCost = costs[s1[i-1]][s2[j-1]];
+        int gapCost = d;
+
+        StringBuilder str1 = new StringBuilder();
+        StringBuilder str2 = new StringBuilder();
+
+        if (DEBUG) {
+            System.out.println("Sequence check running...");
+        }
+        
+        while (i > 0 && j > 0) {
+            int cost1 = mismatchCost + memoizer[i - 1][j - 1];
+            int cost2 = gapCost + memoizer[i - 1][j];
+            int cost3 = gapCost + memoizer[i][j - 1];
+            int smallest = Math.min(cost1, Math.min(cost2, cost3));
+
+            if (DEBUG) {
+                System.out.printf("i: %d, j: %d%n", i, j);
+            }
+
+            if (cost1 == smallest) {
+                if (DEBUG) {
+                    System.out.println("step 1");
+                }
+                str1.append(s1[i-1]);
+                str2.append(s2[j-1]);
+                i--;
+                j--;
+            }
+            else if (cost2 == smallest) {
+                if (DEBUG) {
+                    System.out.println("step 2");
+                }
+                str1.append(s1[i-1]);
+                str2.append('-');
+                i--;
+            }
+            else { //if (cost3 == smallest)
+                if (DEBUG) {
+                    System.out.println("step 3");
+                }
+                str1.append('-');
+                str2.append(s2[j-1]);
+                j--;
+            }
+        }
+
+        if (DEBUG) {
+            System.out.println("Sequence check done");
+        }
+
+        result.setSequence1(str1.reverse().toString());
+        result.setSequence2(str2.reverse().toString());
     }
 
     public static void printOutput(Result result) {
