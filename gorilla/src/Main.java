@@ -14,7 +14,7 @@ public class Main {
     private static int[][] costs;
     private static int d = 4; //We should rename this to gapCost or something
 
-    private static boolean DEBUG = true;
+    private static boolean DEBUG = false;
 
     public static void main(String[] args) {
         assert args.length == 2;
@@ -212,14 +212,14 @@ public class Main {
             if (DEBUG) {
                 System.out.println("Costs:");
                 System.out.printf("%9s", " ");
-                for (int i = 65; i <= greatestChar; i++) {
+                for (int i = 'A'; i <= greatestChar; i++) {
                     System.out.printf("[%3c]", (char)i);
                 }
                 System.out.printf("%n");
-                for (int i = 60; i < costs.length; i++) {
+                for (int i = 'A'; i < costs.length; i++) {
                     System.out.printf("%3d [%c]: [", i, (char)i);
-                    for (int j = 65; j < costs[i].length; j++) {
-                        System.out.printf(j == 65 ? "%3d" : ", %3d", costs[i][j]);
+                    for (int j = 'A'; j < costs[i].length; j++) {
+                        System.out.printf(j == 'A' ? "%3d" : ", %3d", costs[i][j]);
                     }
                     System.out.printf("]%n");
                 }
@@ -231,15 +231,21 @@ public class Main {
     }
 
 
-
+/*
     //skal huske a initialisere memoizer = new int[m+1][n+1];
-    public static int algrec(int x, int y, int i, int j){
-        /*Result result = new Result();
+    public static Result algrec(int x, int y){
+        Result result = new Result();
         result.setName1(names[x]);
-        result.setName2(names[y]);*/
+        result.setName2(names[y]);
 
+        algrec_rec(x, y, x, y, result, new SList());
+
+        //return result;
+    }
+    private static int algrec_rec(int x, int y, int i, int j, Result result, SList steps) {
         char[] s1 = sequences[x];
         char[] s2 = sequences[y];
+
         if(memoizer[i][j] != DEFAULT_MEMOIZER_VALUE){
             return memoizer[i][j];
         }
@@ -249,13 +255,15 @@ public class Main {
             int val1 = costs[s1[i]][s2[j]] + algrec(x, y, i-1, j-1);
             int val2 = d + algrec(x, y, i-1, j);
             int val3 = d + algrec(x, y, i, j-1);
-            memoizer[i][j] = Math.min(val1, Math.min(val2, val3));
+            int smallest = Math.min(val1, Math.min(val2, val3));
+            
+            memoizer[i][j] = smallest;
 
             return memoizer[i][j];
         }
     
-        //return result;
-    }
+    }*/
+
     public static Result alg(int x, int y) {
         Result result = new Result();
         result.setName1(names[x]);
@@ -267,11 +275,11 @@ public class Main {
         int n = s2.length;
         memoizer = new int[m+1][n+1];
 
-        for(int i = 0; i < m; i++){
-            memoizer[i][0] = d;
+        for(int i = 0; i <= m; i++){
+            memoizer[i][0] = d * i;
         }
-        for(int j = 0; j < n; j++){
-            memoizer[0][j] = d;
+        for(int j = 0; j <= n; j++){
+            memoizer[0][j] = d * j;
         }
 
         if (DEBUG) {
@@ -281,11 +289,13 @@ public class Main {
         for(int i = 1; i <= m; i++){
             for(int j = 1; j <= n; j++){
                 //LASSE: Is it okay to always pay a prize, aren't same-match supposed to cost 0?
-                int mismatchCost = s1[i-1] == s2[j-1] ? 0 : costs[s1[i-1]][s2[j-1]];
+                int mismatchCost = costs[s1[i-1]][s2[j-1]];
                 int val1 = mismatchCost + memoizer[i-1][j-1];
                 int val2 = d + memoizer[i-1][j];
                 int val3 = d + memoizer[i][j-1]; 
                 int smallest = Math.min(val1, Math.min(val2, val3));
+
+                memoizer[i][j] = smallest;
 
                 if (DEBUG) {
                     // if (val1 == smallest) {
@@ -302,12 +312,15 @@ public class Main {
                     System.out.printf("val1: %d%n", val1);
                     System.out.printf("val2: %d%n", val2);
                     System.out.printf("val3: %d%n", val3);
-                    System.out.printf("memo: [%3d, %3d]%n", memoizer[i-1][j-1], memoizer[i-1][j]);
-                    System.out.printf("      [%3d, %3d]%n", memoizer[i][j-1], memoizer[i][j]);
-                    System.out.printf("%n");
+                    System.out.printf("memo: ");
+                    for (int i2 = 0; i2 <= m; i2++) {
+                        System.out.printf(i2 == 0 ? "[" : "      [");
+                        for (int j2 = 0; j2 <= n; j2++) {
+                            System.out.printf("%3d", memoizer[i2][j2]);
+                        }
+                        System.out.printf("]%n");
+                    }
                 }
-
-                memoizer[i][j] = smallest;
             }
         }
         result.setCost(memoizer[m][n]);
@@ -327,7 +340,6 @@ public class Main {
         int i = s1.length;
         int j = s2.length;
 
-        int mismatchCost = costs[s1[i-1]][s2[j-1]];
         int gapCost = d;
 
         StringBuilder str1 = new StringBuilder();
@@ -338,6 +350,7 @@ public class Main {
         }
         
         while (i > 0 && j > 0) {
+            int mismatchCost = costs[s1[i-1]][s2[j-1]];
             int cost1 = mismatchCost + memoizer[i - 1][j - 1];
             int cost2 = gapCost + memoizer[i - 1][j];
             int cost3 = gapCost + memoizer[i][j - 1];
@@ -345,6 +358,9 @@ public class Main {
 
             if (DEBUG) {
                 System.out.printf("i: %d, j: %d%n", i, j);
+                System.out.printf("cost1: %d%n", cost1);
+                System.out.printf("cost2: %d%n", cost2);
+                System.out.printf("cost3: %d%n", cost3);
             }
 
             if (cost1 == smallest) {
@@ -372,6 +388,18 @@ public class Main {
                 str2.append(s2[j-1]);
                 j--;
             }
+        }
+
+        while (i > 0) {
+            str1.append(s1[i - 1]);
+            str2.append('-');
+            i--;
+        }
+
+        while (j > 0) {
+            str1.append('-');
+            str2.append(s2[j - 1]);
+            j--;
         }
 
         if (DEBUG) {
@@ -434,5 +462,51 @@ public class Main {
 		public String getName2() {
 			return name2;
 		}
+    }
+
+    private static class SList implements Iterable<Integer> {
+        private static class SListNode {
+            public int val;
+            public SListNode next;
+
+            SListNode(int val, SListNode next) {
+                this.val = val;
+                this.next = next;
+            }
+        }
+
+        public SListNode first;
+
+        public SList() {
+            first = null;
+        }
+
+        public SList(SListNode n) {
+            first = n;
+        }
+        
+        public SList cons(int x) {
+            return new SList(new SListNode(x, first));
+        }
+
+        public Iterator<Integer> iterator() {
+            return new Iterator() {
+                private SListNode current = first;
+                
+                public boolean hasNext() {
+                    return current.next != null;
+                }
+
+                public Integer next() {
+                    int val = current.val;
+                    current = current.next;
+                    return val;
+                }
+
+                public void remove() {
+                    throw new RuntimeException("Not supported");
+                }
+            };
+        }
     }
 }
