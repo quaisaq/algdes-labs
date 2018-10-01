@@ -4,7 +4,7 @@ import java.util.*;
 public class Main {
     // const
     private static final int TRANSFORMATION = -1;
-	private static final int DEFAULT_MEMOIZER_VALUE = -9999;
+	private static final int DEFAULT_MEMOIZER_VALUE = -99;
 
     // data
     private static char[][] sequences;
@@ -18,13 +18,13 @@ public class Main {
 
     public static void main(String[] args) {
         assert args.length == 2;
-        parseCost2(args[0]);
+        parseCost(args[0]);
         parseInput(args[1]);
         for(int i = 0; i < sequences.length; i++){
             for(int j = i+1; j < sequences.length; j++){
                 memoizer = new int[sequences[i].length][sequences[j].length];
                 for(int n = 0; n < memoizer.length; n++){
-                    Arrays.fill(memoizer[n], DEFAULT_MEMOIZER_VALUE);
+                    Arrays.fill(memoizer[n], DEFAULT_MEMOIZER_VALUE); //just to fill in something for debugging purposes
                 }
                 Result result = alg(i, j);
                 printOutput(result);
@@ -115,51 +115,6 @@ public class Main {
         try {
             Scanner sc = new Scanner(f);
             sc.useDelimiter("\r\n");
-            String[] charStrings = null;
-            // Find chars
-            while (sc.hasNext()) {
-				String line = sc.next();
-				
-				// Skip on #
-                if(line.startsWith("#")) continue;
-
-                charStrings = line.trim().split("  ");
-                break;
-            }
-
-            int length = charStrings.length;
-            costs = new int[length][length];
-            // Find cost
-            int i = 0;
-            while (i < length) {
-                String[] costStrings = sc.next().trim().split(" ");
-                int cost[] = Arrays.stream(costStrings)
-                        .skip(1)
-                        .filter((x) -> !x.equals(" ") && !x.isEmpty())
-                        .mapToInt(Integer::valueOf)
-                        .map(x -> x * TRANSFORMATION)
-                        .toArray();
-                costs[i++] = cost;
-            }
-        } catch(FileNotFoundException e) {
-            System.out.printf("Could not open file '%s'\nError:\n%s", filepath, e);
-            System.exit(-1);
-        }
-    }
-
-    public static void parseCost2(String filepath) {
-        if(DEBUG) System.out.printf("Opening file %s\n", filepath);
-
-        // Does file exist?
-		File f = new File(filepath);
-		if(!f.exists()){
-			System.out.printf("File '%s' does not exist. Skipping...\n", filepath);
-			System.exit(-1);
-        }
-        
-        try {
-            Scanner sc = new Scanner(f);
-            sc.useDelimiter("\r\n");
             char[] chars = null;
             int length = -1;
 
@@ -189,7 +144,7 @@ public class Main {
             costs = new int[greatestChar + 1][greatestChar + 1];
 
             for (int i = 0; i < greatestChar + 1; i++) {
-                Arrays.fill(costs[i], -99);
+                Arrays.fill(costs[i], -99); //just for visibility, we will never actually hit this in the algorithm
             }
 
             // Find cost
@@ -231,39 +186,6 @@ public class Main {
     }
 
 
-/*
-    //skal huske a initialisere memoizer = new int[m+1][n+1];
-    public static Result algrec(int x, int y){
-        Result result = new Result();
-        result.setName1(names[x]);
-        result.setName2(names[y]);
-
-        algrec_rec(x, y, x, y, result, new SList());
-
-        //return result;
-    }
-    private static int algrec_rec(int x, int y, int i, int j, Result result, SList steps) {
-        char[] s1 = sequences[x];
-        char[] s2 = sequences[y];
-
-        if(memoizer[i][j] != DEFAULT_MEMOIZER_VALUE){
-            return memoizer[i][j];
-        }
-        if(i==0 || j==0){
-            return d;
-        } else {
-            int val1 = costs[s1[i]][s2[j]] + algrec(x, y, i-1, j-1);
-            int val2 = d + algrec(x, y, i-1, j);
-            int val3 = d + algrec(x, y, i, j-1);
-            int smallest = Math.min(val1, Math.min(val2, val3));
-            
-            memoizer[i][j] = smallest;
-
-            return memoizer[i][j];
-        }
-    
-    }*/
-
     public static Result alg(int x, int y) {
         Result result = new Result();
         result.setName1(names[x]);
@@ -288,7 +210,6 @@ public class Main {
 
         for(int i = 1; i <= m; i++){
             for(int j = 1; j <= n; j++){
-                //LASSE: Is it okay to always pay a prize, aren't same-match supposed to cost 0?
                 int mismatchCost = costs[s1[i-1]][s2[j-1]];
                 int val1 = mismatchCost + memoizer[i-1][j-1];
                 int val2 = d + memoizer[i-1][j];
@@ -298,15 +219,6 @@ public class Main {
                 memoizer[i][j] = smallest;
 
                 if (DEBUG) {
-                    // if (val1 == smallest) {
-                    //     System.out.println("step 1");
-                    // }
-                    // else if (val2 == smallest) {
-                    //     System.out.println("step 2");
-                    // }
-                    // else { //if (val3 == smallest)
-                    //     System.out.println("step 3");
-                    // }
                     System.out.printf("i: %d, j: %d%n", i, j);
                     System.out.printf("mism: %d%n", mismatchCost);
                     System.out.printf("val1: %d%n", val1);
@@ -462,51 +374,5 @@ public class Main {
 		public String getName2() {
 			return name2;
 		}
-    }
-
-    private static class SList implements Iterable<Integer> {
-        private static class SListNode {
-            public int val;
-            public SListNode next;
-
-            SListNode(int val, SListNode next) {
-                this.val = val;
-                this.next = next;
-            }
-        }
-
-        public SListNode first;
-
-        public SList() {
-            first = null;
-        }
-
-        public SList(SListNode n) {
-            first = n;
-        }
-        
-        public SList cons(int x) {
-            return new SList(new SListNode(x, first));
-        }
-
-        public Iterator<Integer> iterator() {
-            return new Iterator() {
-                private SListNode current = first;
-                
-                public boolean hasNext() {
-                    return current.next != null;
-                }
-
-                public Integer next() {
-                    int val = current.val;
-                    current = current.next;
-                    return val;
-                }
-
-                public void remove() {
-                    throw new RuntimeException("Not supported");
-                }
-            };
-        }
     }
 }
