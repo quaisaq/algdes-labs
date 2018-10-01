@@ -68,12 +68,12 @@ echo -e "\nComparing outputs..."
 for outputfile in $outputdir/*.txt; do
 	filename=$(basename "$outputfile")
 	python3 outputcompare.py $outputfile $DATADIR/$filename
-	"""
+	: '
 	if ! diff $outputfile $DATADIR/$filename > /dev/null ; then
 		echo -e "${RED}$outputfile is different from data/$filename${NC}"
 	else
 		echo -e "${GREEN}$outputfile is identical to data/$filename${NC}"
 	fi
-	"""
+	'
 done
 

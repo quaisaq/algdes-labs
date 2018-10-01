@@ -1,11 +1,21 @@
 import sys
 from collections import namedtuple
+import os
 
 DEBUG = False
 
 ResultStruct = namedtuple("ResultStruct", "name, value, str1, str2")
 
 def main(file1, file2):
+    # Check files exist
+    if not doesfileexist(file1):
+        print("%s does not exist..." % file1)
+        return
+    if not doesfileexist(file2):
+        print("%s does not exist..." % file2)
+        return
+
+
     # Parse file1 and store data in file1Data
     if DEBUG:
         print("Parsing %s" % file1)
@@ -28,9 +38,9 @@ def main(file1, file2):
 
     # Check file1 and file2 contain same amount of data
     if len(file1Data) is not len(file2Data):
-        print("Files do not contain same amount of data")
-        print("%d data items found in %s" % (len(file1Data), file1))
-        print("%d data items found in %s" % (len(file2Data), file2))
+        print("Files not identical. Do not contain same amount of data")
+        print("\t%d data items found in %s" % (len(file1Data), file1))
+        print("\t%d data items found in %s" % (len(file2Data), file2))
         return
 
     # Compare fileData
@@ -60,6 +70,10 @@ def parseFile(filename):
                 name = value = str1 = str2 = None
 
                 lineparts = line.split(":")
+                if not len(lineparts) is 2:
+                    if DEBUG:
+                        print("Line not formatted correctly. Expected 'X: X' but got:\n\t%s\nTrying to continue, fingers crossed!" % line)
+                    continue
                 name = lineparts[0].strip()
                 value = lineparts[1].strip()
             elif mod == 2:
@@ -146,6 +160,9 @@ def printStruct(struct):
     else:
         print("%s: %s\n%s\n%s\n" % (struct.name, struct.value, struct.str1, struct.str2))
 
+
+def doesfileexist(filename):
+    return os.path.isfile(filename)
 
 
 if __name__ == "__main__":
