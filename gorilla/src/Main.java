@@ -68,10 +68,11 @@ public class Main {
                     }
                     
                     currentSpeciesName = line.substring(1).split(" ")[0];
-
-                    System.out.printf("New species: %s%n", currentSpeciesName);
-
                     currentGenome = "";
+
+                    if (DEBUG) {
+                        System.out.printf("New species: %s%n", currentSpeciesName);
+                    }
                 } else {
                     // Same species, append to currentGenome
                     currentGenome += line;
@@ -129,7 +130,7 @@ public class Main {
             int length = charStrings.length;
             costs = new int[length][length];
             // Find cost
-            int i = 'A';
+            int i = 0;
             while (i < length) {
                 String[] costStrings = sc.next().trim().split(" ");
                 int cost[] = Arrays.stream(costStrings)
