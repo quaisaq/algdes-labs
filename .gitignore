@@ -25,3 +25,4 @@
 *.fdb_latexmk
 *.fls
 .vscode/
+*.class
