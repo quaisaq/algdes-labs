@@ -102,6 +102,8 @@ def createResultStruct(name, value, str1, str2):
     
     return ResultStruct(name=name, value=value, str1=str1, str2=str2)
 
+# file1Data = out outputfile
+# file2Data = their outputfile
 def compareFileData(file1Data, file2Data):
     filesIdentical = True
 
@@ -120,10 +122,10 @@ def compareFileData(file1Data, file2Data):
         if not compareResultStruct(resultStruct1, resultStruct2):
             filesIdentical = False
 
-            print("\t%s not identical in files!")
-            print("==== File1 ====")
+            print("%s not identical in files!" % key)
+            print("==== File1 (our output) ====")
             printStruct(resultStruct1)
-            print("==== File2 ====")
+            print("==== File2 (their output) ====")
             printStruct(resultStruct2)
 
     return filesIdentical
