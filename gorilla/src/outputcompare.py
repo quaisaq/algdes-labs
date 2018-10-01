@@ -156,5 +156,5 @@ if __name__ == "__main__":
         main(file1, file2)
     else:
         print("Please provide 2 filenames you would like to compare")
-        print("Ex: python3 result.txt output.txt")
+        print("Ex: python3 outputcompare.p outputcompare.py result.txt output.txt")
 
