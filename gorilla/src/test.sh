@@ -7,6 +7,7 @@
 # Source folder without last slash
 DATADIR="./../data"
 MAINFILE=$1
+COSTFILE="$DATADIR/BLOSUM62.txt"
 
 
 # Check any input/argument was given
@@ -56,7 +57,7 @@ MAINFILENOEXT=$(basename $MAINFILE ".java") # Main filename without extension
 for inputfile in $DATADIR/*-in.txt; do
 	echo "Running on $inputfile"
 	filename=$(basename "$inputfile" "-in.txt") # Get input filename without "-in.txt". Allows for finding corresponding out-file
-	java $MAINFILENOEXT "$inputfile" > "$outputdir/$filename-out.txt"
+	java $MAINFILENOEXT $COSTFILE "$inputfile" > "$outputdir/$filename-out.txt"
 done
 
 
