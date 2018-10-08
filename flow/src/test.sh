@@ -17,13 +17,13 @@ resultsfile="$DATADIR/result.txt"
 # Check any input/argument was given
 if [[ $MAINFILE == "" ]] ; then
 	echo "Please give a java file as argument"
-	echo "Ex: ./test.sh myfile.java"
+	echo "Ex: $0 myfile.java"
 	exit 9001
 fi
 
 
 # Check if MAINFILE ends with .java. If not, append
-if [[ ! "$MAINFILE" == *.java ]]; then
+if [[ ! "$MAINFILE" == '*.java' ]]; then
 	MAINFILE="$MAINFILE.java"
 fi
 
