@@ -1,9 +1,10 @@
 import java.util.Set;
+import java.util.HashSet;
 
 public class Vertex {
     private int id;
     private String name;
-    private Set<DiEdge> edges;
+    private Set<DiEdge> edges = new HashSet<DiEdge>();
 
     public Vertex(int id, String name) {
         this.id = id;
