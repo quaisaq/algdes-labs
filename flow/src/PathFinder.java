@@ -3,17 +3,85 @@ import java.util.*;
 public class PathFinder {
 	private Vertex s;
 	private Vertex t;
-	private Graph g;
+	private FlowGraph g;
 	
-	public PathFinder(Graph g, Vertex s, Vertex t) {
-		this.s = s;
-		this.t = t;
+	public PathFinder(FlowGraph g) {
+		this.s = g.getSource();
+		this.t = g.getSink();
 		this.g = g;
 	}
 	
-	public List<Edge> getPath() {
-		List<Edge> es = s.getEdges();
+	public List<DiEdge> getPath() {
+		HashSet<Vertex> visited = new HashSet<>();
+		SList<DiEdge> l = dfs(s, t, visited, new SList<DiEdge>());
+		List<DiEdge> path = new ArrayList<>();
+		for (DiEdge e : l) {
+			path.add(e);
+		}
+		return path;
+	}
+	
+	public SList<DiEdge> dfs(Vertex v, Vertex t, HashSet<Vertex> visited, SList<DiEdge> path) {
+		visited.add(v);
 		
-		return es;
+		for (DiEdge e : v.getEdges()) {
+			Vertex w = e.getTo();
+			
+			if (w == t) {
+				return path;
+			}
+			
+			if (!visited.contains(w)) {
+				return dfs(w, t, visited, path.add(e));
+			}
+		}
+			
+		return path;
+	}
+	
+	private class SList<T> implements Iterable<T> {
+		private class SNode {
+			T val;
+			SNode next;
+			
+			private SNode(T val, SNode next) {
+				this.val = val;
+				this.next = next;
+			}
+		}
+		
+		private SNode first;
+		
+		private SList() {
+			first = null;
+		}
+		
+		public SList(SNode n) {
+			first = n;
+		}
+		
+		public SList<T> add(T val) {
+			return new SList<>(new SNode(val, first));
+		}
+		
+		public Iterator<T> iterator() {
+			return new Iterator<T>(){
+				private SNode current = first;
+				
+				public boolean hasNext() {
+					return current.next != null;
+				}
+				
+				public T next() {
+					T val = current.next.val;
+					current = current.next;
+					return val;
+				}
+				
+				public void remove() {
+					throw new RuntimeException("Not supported!");
+				}
+			};
+		}
 	}
 }

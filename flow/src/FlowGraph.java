@@ -1,8 +1,8 @@
 import java.util.Set;
 
-public class FlowGraph <T> {
-    private Vertex<T> sink;
-    private Vertex<T> source;
+public class FlowGraph {
+    private Vertex sink;
+    private Vertex source;
 
     public Vertex getSink() {
         return sink;
@@ -12,11 +12,11 @@ public class FlowGraph <T> {
         return source;
     }
 
-    public void setSource(Vertex<T> source) {
+    public void setSource(Vertex source) {
         this.source = source;
     }
 
-    public void setSink(Vertex<T> sink) {
+    public void setSink(Vertex sink) {
         this.sink = sink;
     }
 }
