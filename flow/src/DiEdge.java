@@ -1,9 +1,9 @@
 public class DiEdge <T> {
     private T value;
-    private Vertex to;
-    private Vertex from;
+    private Vertex<T> to;
+    private Vertex<T> from;
 
-    public DiEdge(Vertex from, Vertex to) {
+    public DiEdge(Vertex<T> from, Vertex<T> to) {
         this.to = to;
         this.from = from;
         from.addEdge(this);
@@ -17,11 +17,11 @@ public class DiEdge <T> {
         this.value = value;
     }
 
-    public Vertex getTo() {
+    public Vertex<T> getTo() {
         return to;
     }
 
-    public Vertex getFrom() {
+    public Vertex<T> getFrom() {
         return from;
     }
 }
