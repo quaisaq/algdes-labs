@@ -1,7 +1,6 @@
 import java.util.Set;
 
-public class Graph {
-    private Set<Vertex> vertices;
+public class FlowGraph {
     private Vertex sink;
     private Vertex source;
 
@@ -13,11 +12,11 @@ public class Graph {
         return source;
     }
 
-    public Set<Vertex> getVertices() {
-        return vertices;
+    public void setSource(Vertex source) {
+        this.source = source;
     }
 
-    public void addVertex(Vertex vertex) {
-        vertices.add(vertex);
+    public void setSink(Vertex sink) {
+        this.sink = sink;
     }
 }
