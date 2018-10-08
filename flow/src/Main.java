@@ -5,13 +5,13 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-        FlowGraph G = readInput(args[0]);
-        // MinCut alg = new MinCut();
-        // Set<DiEdge> cut = alg.find(G);
-        // printResult(cut);
+        FlowGraph<Integer> G = readInput(args[0]);
+        MinCut alg = new MinCut();
+        Set<DiEdge> cut = alg.find(G);
+        printResult(cut);
     }
 
-    public static FlowGraph readInput(String filepath) {
+    public static FlowGraph<Integer> readInput(String filepath) {
         // Does file exist?
         File f = new File(filepath);
         if(!f.exists()){
@@ -23,7 +23,7 @@ public class Main {
             
             Scanner sc = new Scanner(f);
             
-            FlowGraph graph = new FlowGraph();
+            FlowGraph<Integer> graph = new FlowGraph<Integer>();
 
             ArrayList<Vertex> vertices = new ArrayList<Vertex>();
             int vertexCount = 0;
