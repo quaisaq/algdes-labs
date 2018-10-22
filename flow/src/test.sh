@@ -39,7 +39,7 @@ fi
 # Compile java
 if ! javac $MAINFILE ;
 then
-	echo "\nCould not compile java file $MAINFILE. Exiting..."
+	echo "Could not compile java file $MAINFILE. Exiting..."
 	exit 1
 fi
 
