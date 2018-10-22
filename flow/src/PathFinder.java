@@ -13,7 +13,7 @@ public class PathFinder {
 	
 	public List<DiEdge> getPath() {
 		HashSet<Vertex> visited = new HashSet<>();
-		SList<DiEdge> l = dfs(s, t, visited, new SList<DiEdge>());
+		SinglyLinkedList<DiEdge> l = dfs(s, t, visited, new SinglyLinkedList<DiEdge>());
 		List<DiEdge> path = new ArrayList<>();
 		for (DiEdge e : l) {
 			path.add(e);
@@ -21,7 +21,7 @@ public class PathFinder {
 		return path;
 	}
 	
-	public SList<DiEdge> dfs(Vertex v, Vertex t, HashSet<Vertex> visited, SList<DiEdge> path) {
+	public SinglyLinkedList<DiEdge> dfs(Vertex v, Vertex t, HashSet<Vertex> visited, SinglyLinkedList<DiEdge> path) {
 		visited.add(v);
 		
 		for (DiEdge e : v.getEdges()) {
@@ -39,7 +39,7 @@ public class PathFinder {
 		return path;
 	}
 	
-	private class SList<T> implements Iterable<T> {
+	private class SinglyLinkedList<T> implements Iterable<T> {
 		private class SNode {
 			T val;
 			SNode next;
@@ -52,16 +52,16 @@ public class PathFinder {
 		
 		private SNode first;
 		
-		private SList() {
+		private SinglyLinkedList() {
 			first = null;
 		}
 		
-		public SList(SNode n) {
+		public SinglyLinkedList(SNode n) {
 			first = n;
 		}
 		
-		public SList<T> add(T val) {
-			return new SList<>(new SNode(val, first));
+		public SinglyLinkedList<T> add(T val) {
+			return new SinglyLinkedList<>(new SNode(val, first));
 		}
 		
 		public Iterator<T> iterator() {

@@ -25,7 +25,7 @@ public class Main {
             
             FlowGraph<Integer> graph = new FlowGraph<Integer>();
 
-            ArrayList<Vertex> vertices = new ArrayList<Vertex>();
+            ArrayList<Vertex<Integer>> vertices = new ArrayList<>();
             int vertexCount = 0;
             int edgeCount = 0;
             boolean parsingVertices = true;
@@ -50,20 +50,20 @@ public class Main {
                     continue;
                 } else {
                     if (parsingVertices) {
-                        Vertex v = new Vertex(currentVertexIndex++, line);
+                        Vertex<Integer> v = new Vertex(currentVertexIndex++, line);
                         vertices.add(v);
                     } else {
                         String[] components = line.split(" ");                          // v1 v2 capacity
                         
-                        Vertex v1 = vertices.get(Integer.parseInt(components[0]));
-                        Vertex v2 = vertices.get(Integer.parseInt(components[1]));
+                        Vertex<Integer> v1 = vertices.get(Integer.parseInt(components[0]));
+                        Vertex<Integer> v2 = vertices.get(Integer.parseInt(components[1]));
                         int capacity = Integer.parseInt(components[2]);
 
-                        DiEdge v1_v2 = new DiEdge(v1, v2);                              // Create edge from v1 to v2
+                        DiEdge<Integer> v1_v2 = new RestDiEdge(v1, v2);                              // Create edge from v1 to v2
                         v1_v2.setValue(capacity);
                         v1.addEdge(v1_v2);
 
-                        DiEdge v2_v1 = new DiEdge(v2, v1);                              // Create edge from v2 to v1
+                        DiEdge<Integer> v2_v1 = new RestDiEdge(v2, v1);                              // Create edge from v2 to v1
                         v2_v1.setValue(capacity);
                         v2.addEdge(v2_v1);
                     }
@@ -85,7 +85,10 @@ public class Main {
         return null;
     }
     
-    public static void printResult(Set<DiEdge> cut) {
+    public static void printResult(Set<DiEdge<Integer>> cut) {
         // print
+        for(DiEdge<Integer> e : cut) {
+            System.out.println(e.getFrom().getId() + " " + e.getTo().getId() + " " + e.getValue());
+        }
     }
 }

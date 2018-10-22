@@ -3,7 +3,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class MinCut {
-    public Set<DiEdge> find(FlowGraph<Integer> g) {
+    public Set<DiEdge<Integer>> find(FlowGraph<Integer> g) {
         PathFinder pathFinder = new PathFinder(g);
         while(true) {
             // Find a path
@@ -20,7 +20,7 @@ public class MinCut {
             }
             // Subtract bottleneck value from all edges in path
             for(DiEdge<Integer> e : path) {
-                e.setValue(min);
+                ((RestDiEdge)e).setRestValue(min);
             }
             // Start over
         }
@@ -28,10 +28,12 @@ public class MinCut {
 
     private Set<Vertex<Integer>> getCut(Vertex<Integer> source) {
         Set<Vertex<Integer>> set = new HashSet<>();
+        set.add(source);
         for(RestDiEdge<Integer> e : source.getEdges()) {
             if(!e.isReverse() && e.getValue() != 0) {
-                
+                set.addAll(getCut(e.getTo()));
             }
         }
+        return set;
     }
 }
