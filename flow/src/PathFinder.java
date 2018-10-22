@@ -26,13 +26,20 @@ public class PathFinder {
 		
 		for (DiEdge e : v.getEdges()) {
 			Vertex w = e.getTo();
+
+			if (e.getValue() == 0) {
+				continue;
+			}
 			
 			if (w == t) {
-				return path;
+				return path.add(e);
 			}
 			
 			if (!visited.contains(w)) {
-				return dfs(w, t, visited, path.add(e));
+				SinglyLinkedList<DiEdge> path2 = dfs(w, t, visited, path.add(e));
+				if(path2.first.val.getTo() == t) {
+					return path2;
+				}
 			}
 		}
 			
@@ -69,11 +76,11 @@ public class PathFinder {
 				private SNode current = first;
 				
 				public boolean hasNext() {
-					return current.next != null;
+					return current != null;
 				}
 				
 				public T next() {
-					T val = current.next.val;
+					T val = current.val;
 					current = current.next;
 					return val;
 				}

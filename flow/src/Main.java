@@ -30,11 +30,8 @@ public class Main {
             int edgeCount = 0;
             boolean parsingVertices = true;
 
-            if (sc.hasNext()) {
-                vertexCount = sc.nextInt();
-            }
-
-            // System.out.println("Vertex count: " + vertexCount);
+            assert sc.hasNext();
+            vertexCount = Integer.parseInt(sc.nextLine());
 
             int currentVertexIndex = 0;   // Used to assign index to vertices
             
@@ -58,6 +55,8 @@ public class Main {
                         Vertex v1 = vertices.get(Integer.parseInt(components[0]));
                         Vertex v2 = vertices.get(Integer.parseInt(components[1]));
                         int capacity = Integer.parseInt(components[2]);
+                        if(capacity == -1)
+                            capacity = Integer.MAX_VALUE;
 
                         DiEdge v1_v2 = new RestDiEdge(v1, v2);                              // Create edge from v1 to v2
                         v1_v2.setValue(capacity);
@@ -88,7 +87,8 @@ public class Main {
     public static void printResult(Set<DiEdge> cut) {
         // print
         for(DiEdge e : cut) {
-            System.out.println(e.getFrom().getId() + " " + e.getTo().getId() + " " + e.getValue());
+            RestDiEdge edge = (RestDiEdge)e;
+            System.out.println(e.getFrom().getId() + " " + e.getTo().getId() + " " + edge.getCapactiy());
         }
     }
 }

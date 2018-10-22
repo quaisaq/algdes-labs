@@ -7,8 +7,10 @@ public class MinCut {
         PathFinder pathFinder = new PathFinder(g);
         while(true) {
             // Find a path
+            System.out.println("Finding path");
             List<DiEdge> path = pathFinder.getPath();
             // If no path, get edges out of reachable set of vertices and return it.
+            System.out.println("Found path of size: " + path.size());
             if(path.size() == 0) {
                 return getCut(g.getSource());
             }
@@ -18,26 +20,38 @@ public class MinCut {
                 if(e.getValue() < min)
                     min = e.getValue();
             }
+            System.out.println("Bottleneck of value: " + min);
             // Subtract bottleneck value from all edges in path
             for(DiEdge e : path) {
-                ((RestDiEdge)e).setRestValue(min);
+                ((RestDiEdge)e).setRestValue(e.getValue() - min);
             }
             // Start over
         }
     }
 
     private Set<DiEdge> getCut(Vertex source) {
+        Set<Vertex> group = new HashSet<>();
+        findGroup(source, group);
         Set<DiEdge> set = new HashSet<>();
-        for(DiEdge edge : source.getEdges()) {
-            RestDiEdge e = (RestDiEdge)edge;
-            if(!e.isReverse()) {
-                if(e.getValue() == 0) {
+        for(Vertex v : group) {
+            for(DiEdge edge : v.getEdges()) {
+                RestDiEdge e = (RestDiEdge)edge;
+                if(!e.isReverse() && !group.contains(e.getTo()))
                     set.add(e);
-                } else {
-                    set.addAll(getCut(e.getTo()));
-                }
             }
         }
         return set;
+    }
+
+    private void findGroup(Vertex source, Set<Vertex> group) {
+        group.add(source);
+        for(DiEdge edge : source.getEdges()) {
+            RestDiEdge e = (RestDiEdge)edge;
+            if(group.contains(e.getTo()) || e.isReverse())
+                continue;
+            if(e.getValue() != 0) {
+                findGroup(e.getTo(), group);
+            }
+        }
     }
 }
