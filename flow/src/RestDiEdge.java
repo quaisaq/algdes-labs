@@ -1,4 +1,4 @@
-public class RestDiEdge extends DiEdge<Integer> {
+public class RestDiEdge extends DiEdge {
     private RestDiEdge counterpart;
     private boolean isReverse;
 

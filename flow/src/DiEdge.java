@@ -1,5 +1,5 @@
-public class DiEdge <T> {
-    private T value;
+public class DiEdge {
+    private int value;
     private Vertex to;
     private Vertex from;
 
@@ -9,11 +9,11 @@ public class DiEdge <T> {
         from.addEdge(this);
     } 
 
-    public T getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(T value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

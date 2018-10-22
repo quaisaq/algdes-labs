@@ -5,13 +5,13 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) {
-        FlowGraph<Integer> G = readInput(args[0]);
+        FlowGraph G = readInput(args[0]);
         MinCut alg = new MinCut();
         Set<DiEdge> cut = alg.find(G);
         printResult(cut);
     }
 
-    public static FlowGraph<Integer> readInput(String filepath) {
+    public static FlowGraph readInput(String filepath) {
         // Does file exist?
         File f = new File(filepath);
         if(!f.exists()){
@@ -23,9 +23,9 @@ public class Main {
             
             Scanner sc = new Scanner(f);
             
-            FlowGraph<Integer> graph = new FlowGraph<Integer>();
+            FlowGraph graph = new FlowGraph();
 
-            ArrayList<Vertex<Integer>> vertices = new ArrayList<>();
+            ArrayList<Vertex> vertices = new ArrayList<>();
             int vertexCount = 0;
             int edgeCount = 0;
             boolean parsingVertices = true;
@@ -50,20 +50,20 @@ public class Main {
                     continue;
                 } else {
                     if (parsingVertices) {
-                        Vertex<Integer> v = new Vertex(currentVertexIndex++, line);
+                        Vertex v = new Vertex(currentVertexIndex++, line);
                         vertices.add(v);
                     } else {
                         String[] components = line.split(" ");                          // v1 v2 capacity
                         
-                        Vertex<Integer> v1 = vertices.get(Integer.parseInt(components[0]));
-                        Vertex<Integer> v2 = vertices.get(Integer.parseInt(components[1]));
+                        Vertex v1 = vertices.get(Integer.parseInt(components[0]));
+                        Vertex v2 = vertices.get(Integer.parseInt(components[1]));
                         int capacity = Integer.parseInt(components[2]);
 
-                        DiEdge<Integer> v1_v2 = new RestDiEdge(v1, v2);                              // Create edge from v1 to v2
+                        DiEdge v1_v2 = new RestDiEdge(v1, v2);                              // Create edge from v1 to v2
                         v1_v2.setValue(capacity);
                         v1.addEdge(v1_v2);
 
-                        DiEdge<Integer> v2_v1 = new RestDiEdge(v2, v1);                              // Create edge from v2 to v1
+                        DiEdge v2_v1 = new RestDiEdge(v2, v1);                              // Create edge from v2 to v1
                         v2_v1.setValue(capacity);
                         v2.addEdge(v2_v1);
                     }
@@ -85,9 +85,9 @@ public class Main {
         return null;
     }
     
-    public static void printResult(Set<DiEdge<Integer>> cut) {
+    public static void printResult(Set<DiEdge> cut) {
         // print
-        for(DiEdge<Integer> e : cut) {
+        for(DiEdge e : cut) {
             System.out.println(e.getFrom().getId() + " " + e.getTo().getId() + " " + e.getValue());
         }
     }
