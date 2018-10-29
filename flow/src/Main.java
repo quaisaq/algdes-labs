@@ -73,8 +73,12 @@ public class Main {
     }
     
     public static void printResult(Set<DiEdge> cut) {
+        List<DiEdge> cutList = new ArrayList<>(cut);
+        Comparator<DiEdge> sortByFrom = (e1, e2) -> Integer.compare(e1.getFrom().getId(), e2.getFrom().getId());
+        Comparator<DiEdge> sortByTo = (e1, e2) -> Integer.compare(e1.getTo().getId(), e2.getTo().getId());
+        cutList.sort(sortByFrom.thenComparing(sortByTo));
         // print
-        for(DiEdge e : cut) {
+        for(DiEdge e : cutList) {
             RestDiEdge edge = (RestDiEdge)e;
             System.out.println(e.getFrom().getId() + " " + e.getTo().getId() + " " + edge.getCapactiy());
         }
