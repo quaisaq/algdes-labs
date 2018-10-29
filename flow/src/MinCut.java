@@ -15,7 +15,7 @@ public class MinCut {
                 return getCut(g.getSource());
             }
             // If there is a path, find bottleneck
-            int min = Integer.MAX_VALUE;
+            int min = 1000;
             for(DiEdge e : path) {
                 if(e.getValue() < min)
                     min = e.getValue();
@@ -47,7 +47,7 @@ public class MinCut {
         group.add(source);
         for(DiEdge edge : source.getEdges()) {
             RestDiEdge e = (RestDiEdge)edge;
-            if(group.contains(e.getTo()) || e.isReverse())
+            if(e.isReverse() || group.contains(e.getTo()))
                 continue;
             if(e.getValue() != 0) {
                 findGroup(e.getTo(), group);
