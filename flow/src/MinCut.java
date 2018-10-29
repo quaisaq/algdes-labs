@@ -7,20 +7,17 @@ public class MinCut {
         PathFinder pathFinder = new PathFinder(g);
         while(true) {
             // Find a path
-            System.out.println("Finding path");
             List<DiEdge> path = pathFinder.getPath();
             // If no path, get edges out of reachable set of vertices and return it.
-            System.out.println("Found path of size: " + path.size());
             if(path.size() == 0) {
                 return getCut(g.getSource());
             }
             // If there is a path, find bottleneck
-            int min = 1000;
+            int min = Integer.MAX_VALUE;
             for(DiEdge e : path) {
                 if(e.getValue() < min)
                     min = e.getValue();
             }
-            System.out.println("Bottleneck of value: " + min);
             // Subtract bottleneck value from all edges in path
             for(DiEdge e : path) {
                 ((RestDiEdge)e).setRestValue(e.getValue() - min);

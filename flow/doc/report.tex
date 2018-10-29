@@ -1,6 +1,7 @@
 \documentclass{tufte-handout}
 \usepackage{amsmath}
 \usepackage[utf8]{inputenc}
+\usepackage{pdfpages}
 \usepackage{mathpazo}
 \usepackage{booktabs}
 \usepackage{microtype}
@@ -17,63 +18,52 @@
   \section{Results}
 
   Our implementation successfully computes a flow of 163 on the input file, confirming the analysis of the American enemy.
-  \sidenote{%
-  Complete the report by filling in your correct names,
-  filling in the parts marked $[\ldots]$,
-  and changing other parts wherever necessary.
-  Remove the sidenotes in your final hand-in.
-  Insert `comrades!' and `for the motherland' wherever you see fit.
-  }
 
   We have analysed the possibilities of decreasing the capacities near Minsk.
-  Our analysis is summaries in the following table:\sidenote{%
-    Complete and correct the table.
-  }
+  Our analysis is summaries in the following table:
 
 \bigskip
   \begin{tabular}{rccc}\toprule
     Case & 4W--48 & 4W--49 & Effect on flow \\\midrule
     1& 30& 20 & no change \\
-    2& 20 &30 & no change \\
-    3&20 & 20& $-10$ \\
-    $[\ldots]$ \\\bottomrule
+    2& 20& 30 & no change \\
+    3& 20& 20 & no change \\
+    4& 10& 30 & no change \\
+    5& 30& 10 & no change \\
+    6& 10& 10 & $-20$ \\\bottomrule
   \end{tabular}
   \bigskip
 
-  In case 4, the new bottleneck becomes
+  In cases 3-6, the new bottleneck becomes
   \begin{quote}
-      1--44, 3--2, $[\ldots]$
+      47--46, 48--4W, 49--4W, 49--5, 50--7, 51--7, 51--52, 51--R, H--R
   \end{quote}
-  The comrade from Minsk is advised to $[\ldots]$.
+  In cases 3-5, the flow is still 163, but out algorithm chooses the new cut.
+  The comrade from Minsk is advised to choose case 6, since it is the only one that reduces the overall flow.
 
   \section{Implementation details}
 
-  We use a straightforward implementation of Bellman--Quine's flow algorithm as described in Bronstein, \emph{Foundations of Algorithms}, chap.~6.
-  We use Prim's algorithm to find an augmenting path and also implement the neat trick of flow by recomputing the inverse of the antisnail every 2nd iteration.\sidenote{%
-    Replace by a description of what you actually do.
-  }
+  We use a straightforward implementation of Ford-Fulkerson flow algorithm as described in Bronstein, \emph{Foundations of Algorithms}, chap.~6.
+  We use Depth-first-search to find an augmenting path.
 
-  The running time is $[\ldots]$.
+  The running time is $O(v*e)$.
 
-  We have implemented each undirected edge in the input graph as a $[\ldots]$.
-  In the corresponding residual graph, the edge is represented by a $[\ldots]$.
+  We have only implemented the residual graph, which the input is parsed directly to. Each residual edge is directed and created together with a counterpart. When the flow through a edge is updated, it updates it counterpart by the difference. You can then get the original capacity by just summing its own flow and its counterpart's flow.
   Our datatype for edge is this:
-  \sidenote{%
-    What I wrote here is complete nonsense, of course.
-    Replace by a description of your actual implementation---what \emph{did} you use?
-    A pair of directed edges?
-    A single undirected edges with a bit to see in which direction the flow goes?
-    As indicated, it makes sense to actually include your datatype for edge in the report.
-    Here, and in general, it makes sense to have written short and sweet code.
-  }
   \begin{verbatim}
-    class FlowEdge
+    class RestDiEdge
     {
       Vertex from, to;
-      GUISwingComponentFactory bar;
-      Edge next, parent, foo;
+      RestDiEdge counterpart;
+      int value;
+      
+      void setRestValue(int);
+      void setValue();
+      int getCapacity();
+      int getValue(); 
     }
   \end{verbatim}
 
+\includepdf{secret2.pdf}
 
 \end{document}
