@@ -46,9 +46,9 @@
   We use a straightforward implementation of Ford-Fulkerson flow algorithm as described in Bronstein, \emph{Foundations of Algorithms}, chap.~6.
   We use Depth-first-search to find an augmenting path.
 
-  The running time is $O(v*e)$.
+  The running time is $O(e*f)$, where f is the maximum flow.
 
-  We have only implemented the residual graph, which the input is parsed directly to. Each residual edge is directed and created together with a counterpart. When the flow through a edge is updated, it updates it counterpart by the difference. You can then get the original capacity by just summing its own flow and its counterpart's flow.
+  We have only implemented the residual graph, which the input is parsed directly to. Each residual edge is directed and created together with a counterpart. When the flow through an edge is updated, it updates its counterpart by the difference. You can then get the original capacity by just summing the flows of the edge and its counterpart.
   Our datatype for edge is this:
   \begin{verbatim}
     class RestDiEdge
@@ -58,7 +58,7 @@
       int value;
       
       void setRestValue(int);
-      void setValue();
+      void setValue(int);
       int getCapacity();
       int getValue(); 
     }
