@@ -86,6 +86,7 @@ public class Main{
                 List<DiEdge> res2 = BFS.search(g, rv, g.getTarget(), (v1, v2) -> true);
                 if (res2 != null) {
                     found = true;
+                    break;
                 }
             }
         }
