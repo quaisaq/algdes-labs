@@ -79,11 +79,20 @@ public class Main{
         System.err.println("Solving Some-problem...");
         long startTime = System.nanoTime();
 
-        // TODO do
+        boolean found = false;
+        for (Vertex rv : g.getReds()) {
+            List<DiEdge> res1 = BFS.search(g, g.getSource(), rv, (v1, v2) -> true);
+            if (res1 != null) {
+                List<DiEdge> res2 = BFS.search(g, rv, g.getTarget(), (v1, v2) -> true);
+                if (res2 != null) {
+                    found = true;
+                }
+            }
+        }
 
         long endTime = System.nanoTime();
         if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "";
+        return "Result from Some-problem: " + found;
     }
 
     public static String manySolver(DiGraph g){
@@ -101,7 +110,7 @@ public class Main{
         System.err.println("Solving Few-problem...");
         long startTime = System.nanoTime();
 
-        // TODO do
+        // TODO do using Dijkstra (requires modifying the graph a bit)
 
         long endTime = System.nanoTime();
         if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
@@ -112,11 +121,11 @@ public class Main{
         System.err.println("Solving aLtErNaTe-problem...");
         long startTime = System.nanoTime();
 
-        // TODO do
+        List<DiEdge> res = BFS.search(g, (v1, v2) -> v1.isRed() && !v2.isRed() || !v1.isRed() && v2.isRed());
 
         long endTime = System.nanoTime();
         if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "";
+        return "Result from aLtErNaTe-problem: " + (res != null);
     }
 
     public static void printOutput(List<String> output){

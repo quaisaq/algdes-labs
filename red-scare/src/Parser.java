@@ -1,5 +1,8 @@
 import java.io.File;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
+
 import java.util.HashMap;
 
 public class Parser{
@@ -18,12 +21,17 @@ public class Parser{
 
             // Parse all vertices (n)
             HashMap<String, Vertex> vertices = new HashMap<>();
+            List<Vertex> reds = new ArrayList<>();
             for(int i = 0; i < n; i++){
                 String line = sc.nextLine();
                 boolean red = (line.endsWith("*")) ? true : false;
                 String name = (line.split(" "))[0];
-
-                vertices.put(name, new Vertex(name, red));
+                Vertex v = new Vertex(name, red);
+                
+                vertices.put(name, v);
+                if (red) {
+                    reds.add(v);
+                }
             }
 
             // Parse all edges
@@ -37,16 +45,14 @@ public class Parser{
             }
 
             if(Main.DEBUG){
-                long redCount = vertices.values().stream().parallel().filter(v -> v.isRed()).count();
-            
-                if(redCount != r){
+                if(reds.size() != r){
                     System.err.println("We did not count to same amount of red vertices as specified in the input file!");
-                    System.err.printf("Got %d from inputfile, but our count was %d%n", r, redCount);
+                    System.err.printf("Got %d from inputfile, but our count was %d%n", r, reds.size());
                     System.exit(3);
                 }
             }
 
-            return new DiGraph(vertices.get(beginVertexName), vertices.get(endVertexName));
+            return new DiGraph(vertices.get(beginVertexName), vertices.get(endVertexName), reds);
         }
         catch(Exception e){
             System.err.println("Something happened while parsing?");
