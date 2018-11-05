@@ -37,11 +37,26 @@ public class Parser{
             // Parse all edges
             for(int i = 0; i < m; i++){
                 String v1 = sc.next();
-                sc.next();  // This is " -- ", ignore it
+                String dir = sc.next();
                 String v2 = sc.next();
-
-                DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
-                vertices.get(v1).addEdge(e);
+                
+                if (dir == "->") {
+                    DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
+                    vertices.get(v1).addEdge(e);
+                }
+                else if (dir == "<-") { // not sure this exists
+                    DiEdge e = new DiEdge(vertices.get(v2), vertices.get(v1));
+                    vertices.get(v2).addEdge(e);
+                }
+                else if (dir == "--") {
+                    DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
+                    vertices.get(v1).addEdge(e);
+                    DiEdge e2 = new DiEdge(vertices.get(v2), vertices.get(v1));
+                    vertices.get(v2).addEdge(e2);
+                }
+                else {
+                    System.err.printf("Direction of edge couldn't be parsed! Found this direction: %s%n", dir);
+                }
             }
 
             if(Main.DEBUG){

@@ -79,6 +79,8 @@ public class Main{
         System.err.println("Solving Some-problem...");
         long startTime = System.nanoTime();
 
+        //TODO: Change this to something else, as this is not perfect.
+        //TODO: Maybe it's only a problem when there are cycles where red vertices participate?
         boolean found = false;
         for (Vertex rv : g.getReds()) {
             List<DiEdge> res1 = BFS.search(g, g.getSource(), rv, (v1, v2) -> true);
