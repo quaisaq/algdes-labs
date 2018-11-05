@@ -13,7 +13,9 @@ public class BFS {
 
         visited.add(source);
         for(DiEdge e : source.getEdges()){
-            q.add(e);
+            if(shouldVisit.apply(source, e.getTo())) {
+                q.add(e);
+            }
         }
 
         while(!q.isEmpty()){
