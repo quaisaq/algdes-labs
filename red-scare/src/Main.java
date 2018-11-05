@@ -68,11 +68,11 @@ public class Main{
         System.err.println("Solving None-problem...");
         long startTime = System.nanoTime();
 
-        // TODO do
+        List<DiEdge> res = BFS.search(g, (v1, v2) -> !v2.isRed());
 
         long endTime = System.nanoTime();
         if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "";
+        return "" + res.size();
     }
 
     public static String someSolver(DiGraph g){
