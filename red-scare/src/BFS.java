@@ -24,7 +24,7 @@ public class BFS{
 
                 // If our shouldVisit function approves of from and to
                 if(shouldVisit.apply(from, to)){
-
+                    if(Main.DEBUG) System.err.printf("Going from %s to %s%n", from.getName(), to.getName());
                     // Path stuff
                     previous.put(to, e);
 
@@ -54,6 +54,7 @@ public class BFS{
             result.add(current);
             current = previous.get(current.getFrom());
         }
+        result.add(current);    // remember to add last edge from source
 
         return result;
     }

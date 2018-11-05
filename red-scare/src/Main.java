@@ -71,8 +71,8 @@ public class Main{
         List<DiEdge> res = BFS.search(g, (v1, v2) -> !v2.isRed());
 
         long endTime = System.nanoTime();
-        if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "" + res.size();
+        if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
+        return "Result from None-problem: " + res.size();
     }
 
     public static String someSolver(DiGraph g){
@@ -82,7 +82,7 @@ public class Main{
         // TODO do
 
         long endTime = System.nanoTime();
-        if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
+        if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
         return "";
     }
 
@@ -93,7 +93,7 @@ public class Main{
         // TODO do
 
         long endTime = System.nanoTime();
-        if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
+        if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
         return "";
     }
 
@@ -104,7 +104,7 @@ public class Main{
         // TODO do
 
         long endTime = System.nanoTime();
-        if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
+        if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
         return "";
     }
 
@@ -115,7 +115,7 @@ public class Main{
         // TODO do
 
         long endTime = System.nanoTime();
-        if(DEBUG) System.err.printf("Completed in %.3f ms%n", ((endTime - startTime) / 1_000_000D));
+        if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
         return "";
     }
 
