@@ -1,5 +1,9 @@
 import java.util.List;
 
+/**
+ * A DiGraph represents a graph of directed edges between vertices.
+ * The graph itself is stored between each Vertex in the graph.
+ */
 public class DiGraph{
     private final Vertex source;
     private final Vertex target;

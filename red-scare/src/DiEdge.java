@@ -1,3 +1,7 @@
+/**
+ * A DiEdge is a directed edge between two vertices.
+ * The DiEdge supports having a weight, but can be instantiated without (which gives it a weight of 0)
+ */
 public class DiEdge{
     private final Vertex from;
     private final Vertex to;
