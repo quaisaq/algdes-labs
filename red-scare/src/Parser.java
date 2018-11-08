@@ -9,6 +9,7 @@ public class Parser{
     public static DiGraph parse(String filename){
         File f = new File(filename);
 
+        //Create scanner for file - automatically closed by try-with-resource statement
         try(Scanner sc = new Scanner(f)){
             int n = sc.nextInt();
             int m = sc.nextInt();
@@ -40,19 +41,24 @@ public class Parser{
                 String dir = sc.next();
                 String v2 = sc.next();
                 
-                if (dir == "->") {
+                if (dir == "->") { //directed edge from v1 to v2
                     DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
-                    vertices.get(v1).addEdge(e);
+                    vertices.get(v1).addOutEdge(e);
+                    vertices.get(v2).addInEdge(e);
                 }
-                else if (dir == "<-") { // not sure this exists
+                else if (dir == "<-") { //directed edge from v2 to v1 - not sure this exists
                     DiEdge e = new DiEdge(vertices.get(v2), vertices.get(v1));
-                    vertices.get(v2).addEdge(e);
+                    vertices.get(v2).addOutEdge(e);
+                    vertices.get(v1).addInEdge(e);
                 }
-                else if (dir == "--") {
+                else if (dir == "--") { //undirected edge
+                    //we handle undirected edges as two directed edges, one in each direction
                     DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
-                    vertices.get(v1).addEdge(e);
+                    vertices.get(v1).addOutEdge(e);
+                    vertices.get(v2).addInEdge(e);
                     DiEdge e2 = new DiEdge(vertices.get(v2), vertices.get(v1));
-                    vertices.get(v2).addEdge(e2);
+                    vertices.get(v2).addOutEdge(e2);
+                    vertices.get(v1).addInEdge(e2);
                 }
                 else {
                     System.err.printf("Direction of edge couldn't be parsed! Found this direction: %s%n", dir);
