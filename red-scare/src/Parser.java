@@ -41,17 +41,17 @@ public class Parser{
                 String dir = sc.next();
                 String v2 = sc.next();
                 
-                if (dir == "->") { //directed edge from v1 to v2
+                if (dir.equals("->")) { //directed edge from v1 to v2
                     DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
                     vertices.get(v1).addOutEdge(e);
                     vertices.get(v2).addInEdge(e);
                 }
-                else if (dir == "<-") { //directed edge from v2 to v1 - not sure this exists
+                else if (dir.equals("<-")) { //directed edge from v2 to v1 - not sure this exists
                     DiEdge e = new DiEdge(vertices.get(v2), vertices.get(v1));
                     vertices.get(v2).addOutEdge(e);
                     vertices.get(v1).addInEdge(e);
                 }
-                else if (dir == "--") { //undirected edge
+                else if (dir.equals("--")) { //undirected edge
                     //we handle undirected edges as two directed edges, one in each direction
                     DiEdge e = new DiEdge(vertices.get(v1), vertices.get(v2));
                     vertices.get(v1).addOutEdge(e);
