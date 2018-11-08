@@ -102,11 +102,11 @@ public class Main{
         System.err.println("Solving Many-problem...");
         long startTime = System.nanoTime();
 
-        // TODO do
+        int m = ManySearcher.search(g);
 
         long endTime = System.nanoTime();
         if(DEBUG) System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "";
+        return "Result from Many-problem: " + m;
     }
 
     public static String fewSolver(DiGraph g){
