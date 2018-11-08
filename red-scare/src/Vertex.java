@@ -43,10 +43,10 @@ public class Vertex{
     }
 
     public void addInEdge(DiEdge e){
-        this.outEdges.add(e);
+        this.inEdges.add(e);
     }
 
     public List<DiEdge> getInEdges(){
-        return this.outEdges;
+        return this.inEdges;
     }
 }
