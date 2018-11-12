@@ -29,9 +29,6 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
-
-
 /**
  *  The {@code DijkstraSP} class represents a data type for solving the
  *  single-source shortest paths problem in edge-weighted digraphs
