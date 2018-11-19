@@ -30,52 +30,56 @@ public class Main
 
         System.err.println("Hello, let me solve this for you. Please wait :-)");
 
+        String filepath = args[0];
+
         // Parse input file and return graph  
-        RGraph graph = Parser.parse(args[0]);
+        RGraph graph = Parser.parse(filepath);
 
         // String list used for printing output after problems are solved
-        List<String> output = new ArrayList<>();
+        ResultDto output = new ResultDto();
+
+        // output initial values
+        output.Name = filepath;
+        output.n = graph.vertexSet().size();
 
         switch(problem2Solve){
             // Solve None
             case 0:
-                output.add(solve(graph, new NoneSolver()));
+                output.N = solve(graph, new NoneSolver());
                 break;
                 
             // Solve Some
             case 1:
-                output.add(solve(graph, new SomeSolver()));
+                output.S = solve(graph, new SomeSolver());
                 break;    
     
             // Solve Many
             case 2:
-                output.add(solve(graph, new ManySolver()));
+                output.M = solve(graph, new ManySolver());
                 break;          
     
             // Solve Few
             case 3:
-                output.add(solve(graph, new FewSolver()));
+                output.F = solve(graph, new FewSolver());
                 break;       
     
             // Solve aLtErNaTe
             case 4:
-                output.add(solve(graph, new AlternateSolver()));
+                output.A = solve(graph, new AlternateSolver());
                 break;   
 
             // Solve EVERYTHING!
             default:
-                output.add(solve(graph, new NoneSolver()));
-                output.add(solve(graph, new SomeSolver()));
-                output.add(solve(graph, new ManySolver()));
-                output.add(solve(graph, new FewSolver()));
-                output.add(solve(graph, new AlternateSolver()));
+                output.N = solve(graph, new NoneSolver());
+                output.S = solve(graph, new SomeSolver());
+                output.M = solve(graph, new ManySolver());
+                output.F = solve(graph, new FewSolver());
+                output.A = solve(graph, new AlternateSolver());
                 break;               
         }
 
         //print output
-        for (String s : output) {
-            System.out.println(s);
-        }
+        printOutput(output);
     }
 
     public static String solve(RGraph g, Solver s) {
@@ -86,6 +90,26 @@ public class Main
 
         long endTime = System.nanoTime();
         System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
-        return "Result from " + s.getName() + "-problem: " + output;
+        return output;
     }
+
+    public static void printOutput(ResultDto dto){
+        System.out.printf("%s, %d, %s, %s, %s, %s, %s%n", dto.Name, dto.n, dto.A, dto.F, dto.M, dto.N, dto.S);
+    }
+
+    
+}
+
+class ResultDto{
+    public ResultDto(){}
+
+    private static final String _default = "-";
+
+    public String Name = _default;
+    public int n = 0;
+    public String A = _default;     // aLtErNaTe-problem
+    public String F = _default;     // Few-problem
+    public String M = _default;     // Many-problem
+    public String N = _default;     // None-problem
+    public String S = _default;     // Some-problem
 }

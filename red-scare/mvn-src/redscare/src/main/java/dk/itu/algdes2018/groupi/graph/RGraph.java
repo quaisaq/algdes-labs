@@ -11,6 +11,9 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
+// import org.jgrapht.alg.shortestpath.NegativeCycleDetectedException;
+
 
 public class RGraph {
     private final SimpleDirectedWeightedGraph<RVertex, Object> graph;
@@ -54,6 +57,10 @@ public class RGraph {
 
 	public void setTarget(RVertex t) {
         this.target = t;
+    }
+    
+	public double getEdgeWeight(Object e) {
+		return graph.getEdgeWeight(e);
     }
     
     public RVertex getEdgeFrom(Object edge) {
@@ -179,10 +186,26 @@ public class RGraph {
 	public double DijkstraWeight() {
         GraphPath<RVertex, Object> gp = DijkstraShortestPath.findPathBetween(graph, source, target);
         return gp == null ? -1 : gp.getWeight();
-	}
-
+    }
+    
 	public double maxFlow() {
         DinicMFImpl<RVertex, Object> mf = new DinicMFImpl<>(graph);
         return mf.calculateMaximumFlow(getSource(), getTarget());
+    }
+
+	public double BellmanFordWeight() {
+        try{
+            GraphPath<RVertex, Object> gp = BellmanFordShortestPath.findPathBetween(graph, source, target);
+            return gp == null ? -1 : gp.getWeight() * -1;
+        }
+        catch (Exception e){
+            System.err.println("(This is red text) Negative cycle in graph. There is no solution to the many problem");
+            // Negative cycle detected
+            return -1;
+        }
+	}
+
+	public Set<RVertex> vertexSet() {
+		return graph.vertexSet();
 	}
 }
