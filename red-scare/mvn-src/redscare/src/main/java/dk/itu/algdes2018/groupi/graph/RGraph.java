@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.jgrapht.GraphPath;
+import org.jgrapht.alg.flow.DinicMFImpl;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
@@ -178,5 +179,10 @@ public class RGraph {
 	public double DijkstraWeight() {
         GraphPath<RVertex, Object> gp = DijkstraShortestPath.findPathBetween(graph, source, target);
         return gp == null ? -1 : gp.getWeight();
+	}
+
+	public double maxFlow() {
+        DinicMFImpl<RVertex, Object> mf = new DinicMFImpl<>(graph);
+        return mf.calculateMaximumFlow(getSource(), getTarget());
 	}
 }
