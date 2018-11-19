@@ -149,4 +149,8 @@ public class RGraph {
             return -1;
         }
 	}
+
+	public Set<RVertex> vertexSet() {
+		return graph.vertexSet();
+	}
 }
