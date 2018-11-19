@@ -3,6 +3,7 @@ package dk.itu.algdes2018.groupi.graph;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
@@ -100,7 +101,55 @@ public class RGraph {
 	public boolean removeEdge(RVertex from, RVertex to) {
         Object o = graph.removeEdge(from, to);
         return o != null;
-	}
+    }
+    
+    public boolean isUndirected() {
+        class DiEdge {
+            public final RVertex from;
+            public final RVertex to;
+
+            public DiEdge(RVertex from, RVertex to) {
+                this.from = from;
+                this.to = to;
+            }
+
+            public boolean equals(Object o) {
+                if (o == this) {
+                    return true;
+                }
+                if (o instanceof DiEdge) {
+                    DiEdge e = (DiEdge)o;
+                    return e.from.equals(this.from) && e.to.equals(this.to);
+                }
+                return false;
+            }
+
+            public int hashCode() {
+                return from.hashCode() + to.hashCode();
+            }
+
+            public DiEdge inverse() {
+                return new DiEdge(to, from);
+            }
+        }
+
+        //Making new set because I don't want to take each vertex out every time we do a test.
+        HashSet<DiEdge> set = new HashSet<>();
+        for (Object e : getEdges()) {
+            RVertex from = getEdgeFrom(e);
+            RVertex to = getEdgeTo(e);
+            DiEdge de = new DiEdge(from, to);
+            set.add(de);
+        }
+        
+        for (DiEdge e : set) {
+            if (!set.contains(e.inverse())) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     public RGraph copy() {
         SimpleDirectedWeightedGraph<RVertex, Object> g = (SimpleDirectedWeightedGraph<RVertex, Object>)graph.clone();
