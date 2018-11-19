@@ -52,7 +52,10 @@
 			<version>1.2.1</version>
 			<configuration>
 				<includePluginDependencies>true</includePluginDependencies>
-				<mainClass>dk.itu.algdes2018.groupi.Main</mainClass>               
+				<mainClass>dk.itu.algdes2018.groupi.Main</mainClass>
+				<arguments>
+					<argument>${input}</argument>
+				</arguments>
 			</configuration>
 		</plugin>
       </plugins>
