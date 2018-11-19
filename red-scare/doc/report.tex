@@ -34,12 +34,20 @@ For those questions where there is a reason for my inability to find a good algo
 For the complete table of all results, see the tab-separated text file {\tt results.txt}.
 
 \subsection{Methods}
+%  For problem A, I solved each instance $G$ by $\cdots$\footnote{Describe what you did.
+%  Use words like ``building a inverse anti-tree without self-loops where each vertex in $G$ is presented by a Strogatz--Wasserman shtump.
+%  I then performed a standard longest hash sorting using the algorithm of Bronf (Algorithm 5 in [1]).''
+%  Be neat, brief, and precise.}
 
-For problem A, I solved each instance $G$ by $\cdots$\footnote{Describe what you did.
-  Use words like ``building a inverse anti-tree without self-loops where each vertex in $G$ is presented by a Strogatz--Wasserman shtump.
-  I then performed a standard longest hash sorting using the algorithm of Bronf (Algorithm 5 in [1]).''
-  Be neat, brief, and precise.}
-The running time of this algorithm is $\cdot$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
+% TODO: Specify where BFS alg comes from
+For problem A, I solved each instance $G$ by removing all edges that go between vertices of same color, unless it is $s -- t$. This new graph is then run on a shortest-path algorithm. In this case Breadth-First Search (BFS).
+The running time of this algorithm is $O(V + E)$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
+
+For problem F, I solved each instance $G$ by $\cdots$
+The running time of this algorithm is $\cdots$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
+
+For problem N, I solved each instance $G$ by removing all red vertices from the graph, and then feeding it to a shortest-path algorithm.
+The running time of this algorithm is $O(V + E)$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
 
 I solved problem $\cdots$ for all $\cdots$\footnote{For instance, “planar, bipartite”} graphs using $\cdots$.
 
