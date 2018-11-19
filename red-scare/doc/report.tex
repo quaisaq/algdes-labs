@@ -51,10 +51,12 @@ The running time of this algorithm is $O(V + E)$, and my implementation spends $
 
 We solved problem S for all undirected graphs by creating a flow, and using Ford-Fulkerson. The flow graph is created by adding a new source vertex, and attaching it to both $s$ and $t$, each with capacity 1. A new target is also created, and attached to a red vertex with capacity 2. This is then done for every red vertex until a flow of size 2 is found.
 
-I was unable to solve problem M except for the acyclic instances.
+We were unable to solve problem M except for the acyclic instances.
 This is because, in generality, this problem is NP-hard. 
 To see this, consider the following reduction from Hamiltonian paths to Many.
 Let $g$ be a graph that we must find a Hamiltonian path for, with vertices $V$ and edges $E$. To reduce it so a many problem, we set $R = V$. If the result of many problem is $n$, then the graph has a Hamiltonian path if $n = |V|$.
+For acyclic graphs, the problem can be solved by adding weights to the edges and running Bellman-Ford on it. Every edge going into red vertices gets a weight of -1. Every other edge gets a weight of 0. The algorithm finds the shortest path, which will include as many red vertices as possible. This is because paths with as many reds as possible, negative edges, will result in the lowest negative path.
+
 
 \subsection{References}
 \begin{description}
