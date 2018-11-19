@@ -40,7 +40,15 @@ public class RGraph {
     
 	public void setSource(RVertex s) {
         this.source = s;
-	}
+    }
+    
+    public RVertex getSource(){
+        return this.source;
+    }
+
+    public RVertex getTarget(){
+        return this.target;
+    }
 
 	public void setTarget(RVertex t) {
         this.target = t;
@@ -56,6 +64,10 @@ public class RGraph {
 
 	public Set<Object> getIncomingEdges(RVertex v) {
 		return graph.incomingEdgesOf(v);
+    }
+
+    public Set<Object> getOutgoingEdges(RVertex v) {
+		return graph.outgoingEdgesOf(v);
 	}
 
 	public void setEdgeWeight(Object e, double w) {

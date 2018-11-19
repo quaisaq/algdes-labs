@@ -7,9 +7,28 @@ public class NoneSolver implements Solver {
     private static final String NAME = "None";
 
     private static RGraph preparedGraph(RGraph graph) {
+
+        // Check if direct path between source and target
+        for (Object e : graph.getOutgoingEdges(graph.getSource())) {
+            RVertex to = graph.getEdgeTo(e);
+            if(graph.getTarget() == to){
+                RGraph edgeGraph = new RGraph();
+                // Add source and target and edge
+                edgeGraph.setSource(graph.getSource());
+                edgeGraph.setTarget(graph.getTarget());
+                edgeGraph.addEdge(edgeGraph.getSource(), edgeGraph.getTarget());
+
+                return edgeGraph;
+            }
+        }
+
         RGraph newGraph = graph.copy();
 
+        // Remove all red vertices, except source and target
         for (RVertex v : graph.getReds()) {
+            if(v == graph.getTarget() || v == graph.getSource()){
+                continue;
+            }
             newGraph.removeVertex(v);
         }
 
