@@ -15,13 +15,6 @@ public class ManySolver implements Solver {
             }
         }
 
-        // for(Object e : newGraph.getEdges()){
-        //     double weight = newGraph.getEdgeWeight(e);
-        //     RVertex from = newGraph.getEdgeFrom(e);
-        //     RVertex to = newGraph.getEdgeTo(e);
-        //     System.out.printf("{%s} == {%f} => {%s}%n", from.getName(), weight, to.getName());
-        // }
-
         return newGraph;
     }
 
