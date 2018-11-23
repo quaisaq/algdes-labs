@@ -14,13 +14,25 @@ public class SomeSolver implements Solver {
         RVertex newSource = new RVertex("NEW SOURCE", false);
         RVertex newTarget = new RVertex("NEW TARGET", false);
 
+        newGraph.addVertex(newSource);
+        newGraph.addVertex(newTarget);
+
         newGraph.addEdge(newSource, newGraph.getSource());
         newGraph.addEdge(newSource, newGraph.getTarget());
+
+        for(Object e : newGraph.getEdges())
+            newGraph.setEdgeWeight(e, Double.POSITIVE_INFINITY);
+
+        for(Object e : newGraph.getOutgoingEdges(newSource))
+            newGraph.setEdgeWeight(e, 1);
 
         newGraph.setSource(newSource);
         newGraph.setTarget(newTarget);
 
         newGraph.addEdge(red, newTarget);
+
+        for(Object e : newGraph.getIncomingEdges(newTarget))
+            newGraph.setEdgeWeight(e, 2);
 
         return newGraph;
     }
@@ -28,11 +40,17 @@ public class SomeSolver implements Solver {
     private static void prepareNextGraph(RGraph graph, RVertex oldRed, RVertex newRed) {
         graph.removeEdge(oldRed, graph.getTarget());
         graph.addEdge(newRed, graph.getTarget());
+
+        for(Object e : graph.getIncomingEdges(graph.getTarget()))
+            graph.setEdgeWeight(e, 2);
     }
 
     public String solve(RGraph g) {
         if (!g.isUndirected()) {
-            return Boolean.toString(Integer.parseInt(new ManySolver().solve(g)) > 0);
+            String manyResult = new ManySolver().solve(g);
+            if(manyResult.contains("?"))
+                return manyResult;
+            return Boolean.toString(Integer.parseInt(manyResult) > 0);
         }
         
         List<RVertex> reds = g.getReds();

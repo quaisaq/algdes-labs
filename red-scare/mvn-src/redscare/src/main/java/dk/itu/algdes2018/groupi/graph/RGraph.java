@@ -201,7 +201,7 @@ public class RGraph {
         catch (Exception e){
             System.err.println("(This is red text) Negative cycle in graph. There is no solution to the many problem");
             // Negative cycle detected
-            return -1;
+            return -2;
         }
 	}
 

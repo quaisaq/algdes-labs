@@ -70,11 +70,11 @@ public class Main
 
             // Solve EVERYTHING!
             default:
+                output.A = solve(graph, new AlternateSolver());
+                output.F = solve(graph, new FewSolver());
+                output.M = solve(graph, new ManySolver());
                 output.N = solve(graph, new NoneSolver());
                 output.S = solve(graph, new SomeSolver());
-                output.M = solve(graph, new ManySolver());
-                output.F = solve(graph, new FewSolver());
-                output.A = solve(graph, new AlternateSolver());
                 break;               
         }
 

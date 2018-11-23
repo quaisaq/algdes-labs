@@ -38,8 +38,8 @@ For the complete table of all results, see the tab-separated text file {\tt resu
 %  Use words like ``building a inverse anti-tree without self-loops where each vertex in $G$ is presented by a Strogatz--Wasserman shtump.
 %  I then performed a standard longest hash sorting using the algorithm of Bronf (Algorithm 5 in [1]).''
 %  Be neat, brief, and precise.}
+All algorithm and graph implementations are from the JGraphT library\footnote{https://jgrapht.org/}.
 
-% TODO: Specify where BFS alg comes from
 For problem A, I solved each instance $G$ by removing all edges that go between vertices of same color, unless it is $s -- t$. This new graph is then run on a shortest-path algorithm. In this case Breadth-First Search (BFS).
 The running time of this algorithm is $O(V + E)$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
 
