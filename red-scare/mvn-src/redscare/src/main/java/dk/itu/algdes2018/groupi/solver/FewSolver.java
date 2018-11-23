@@ -22,7 +22,6 @@ public class FewSolver implements Solver {
         RGraph graph = preparedGraph(g);
 
         int depth = (int)graph.DijkstraWeight();
-
         return Integer.toString(depth);
     }
 

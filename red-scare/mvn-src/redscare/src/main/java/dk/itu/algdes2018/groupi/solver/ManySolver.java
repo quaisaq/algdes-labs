@@ -23,6 +23,8 @@ public class ManySolver implements Solver {
 
         int depth = (int)graph.BellmanFordWeight();
 
+        if(depth == -2)
+            return "?!";
         return Integer.toString(depth);
     }
 
