@@ -28,7 +28,7 @@ public class Main
         // Debug flag. If 3 arguments given, debug...
         DEBUG = (args.length == 3) ? true : false;
 
-        System.err.println("Hello, let me solve this for you. Please wait :-)");
+        if(DEBUG) System.err.println("Hello, let me solve this for you. Please wait :-)");
 
         String filepath = args[0];
 
@@ -83,13 +83,18 @@ public class Main
     }
 
     public static String solve(RGraph g, Solver s) {
-        System.err.println("Solving " + s.getName() + "-problem...");
-        long startTime = System.nanoTime();
+        String output;
+        if(DEBUG) {
+            System.err.println("Solving " + s.getName() + "-problem...");
+            long startTime = System.nanoTime();
 
-        String output = s.solve(g);
+            output = s.solve(g);
 
-        long endTime = System.nanoTime();
-        System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
+            long endTime = System.nanoTime();
+            System.err.printf("Completed in %.2f ms%n", ((endTime - startTime) / 1_000_000D));
+        } else {
+            output = s.solve(g);
+        }
         return output;
     }
 
