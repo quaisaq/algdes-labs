@@ -1,4 +1,4 @@
-\documentclass{tufte-handout}
+\documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{tikz}
 \usepackage{amsmath}
@@ -9,7 +9,7 @@
 \begin{document}
 \section{Red Scare! Report}
 
-by Alice Cooper.
+by Lasse Lange Jakobsen, Marcus Joost, Jeppe Rask, Rune Kofoed-Nissen \& Patrick Bassing.
 
 \subsection{Results}
 
@@ -20,15 +20,16 @@ The following table gives my results for all graphs of at least 500 vertices.
   \toprule
   Instance name & $n$ & A & F & M & N & S \\
   \midrule
-  rusty-5762 & 5,762 & true & 16 & -- & ? & 5 \\
-  wall-p-10000 & 10,000 &\\	
-  $\vdots$\\
+  common-2-5000 & 5000 & true & 1 & ?! & 4 & true \\
+  wall-p-1000 & 6002 & false & 0 & ?! & 1 & false\\
+  smallworld-50-1 & 2500 & true & 1 & ?! & -1 & true\\
+  rusty-1-2000 & 2000 & false & -1 & -1 & -1 & false
   \bottomrule
 \end{tabular}
 \medskip
 
-The columns are for the problems Alternate, Few, Many, None, and Some.
-For those questions where there is a reason for my inability to find a good algorithm (because the problem is hard), we wrote `?!'.
+\noindent The columns are for the problems Alternate, Few, Many, None, and Some.
+For those questions where there is a reason for our inability to find a good algorithm (because the problem is hard), we wrote `?!'.
 This is the case for Many, when the graph has a negative-cycle and for Some, when the graph is undirected AND has a negative cycle.
 If no path is found, we wrote `-1'.
 For the complete table of all results, see the tab-separated text file {\tt results.txt}.
@@ -40,29 +41,20 @@ For the complete table of all results, see the tab-separated text file {\tt resu
 %  Be neat, brief, and precise.}
 All algorithm and graph implementations are from the JGraphT library\footnote{https://jgrapht.org/}.
 
-For problem A, I solved each instance $G$ by removing all edges that go between vertices of same color, unless it is $s -- t$. This new graph is then run on a shortest-path algorithm. In this case Breadth-First Search (BFS).
-The running time of this algorithm is $O(V + E)$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
-
-For problem F, I solved each instance $G$ by adding edge weights. Weight of 1 for edges into red vertices, and weight of 0 for all other edges. Then we run Dijkstra to get the minimum path.
-The running time of this algorithm is $\cdots$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
-
-For problem N, I solved each instance $G$ by removing all red vertices from the graph, and then feeding it to a shortest-path algorithm.
-The running time of this algorithm is $O(V + E)$, and my implementation spends $\cdots$ seconds on the instance $\cdots$ with  $n=\cdots$.
-
-We solved problem S for all undirected graphs by creating a flow, and using Ford-Fulkerson. The flow graph is created by adding a new source vertex, and attaching it to both $s$ and $t$, each with capacity 1. A new target is also created, and attached to a red vertex with capacity 2. This is then done for every red vertex until a flow of size 2 is found.
-
-We were unable to solve problem M except for the acyclic instances.
-This is because, in generality, this problem is NP-hard. 
-To see this, consider the following reduction from Hamiltonian paths to Many.
-Let $g$ be a graph that we must find a Hamiltonian path for, with vertices $V$ and edges $E$. To reduce it so a many problem, we set $R = V$. If the result of many problem is $n$, then the graph has a Hamiltonian path if $n = |V|$.
-For acyclic graphs, the problem can be solved by adding weights to the edges and running Bellman-Ford on it. Every edge going into red vertices gets a weight of -1. Every other edge gets a weight of 0. The algorithm finds the shortest path, which will include as many red vertices as possible. This is because paths with as many reds as possible, negative edges, will result in the lowest negative path.
-
+For problem A (Alternate), we solved each instance $G$ by removing all edges that go between vertices of same color, unless it is $s -- t$. This new graph is then run on a shortest-path algorithm. In this case Breadth-First Search (BFS).
+The running time of this algorithm is $O(V + E)$.\\\\
+For problem F (Few), we solved each instance $G$ by adding edge weights. Weight of 1 for edges into red vertices, and weight of 0 for all other edges. Then we run Dijkstra to get the minimum path $O(E + V log(V))$.\\\\
+For problem N (None), we solved each instance $G$ by removing all red vertices from the graph, and then feeding it to a shortest-path algorithm.
+The running time of this algorithm is $O(V + E)$.\\\\
+We solved problem S (Some) for all undirected graphs by creating a flow, and using Dinic's algorithm\footnote{https://en.wikipedia.org/wiki/Dinic\%27s_algorithm}. The flow graph is created by adding a new source vertex, and attaching it to both $s$ and $t$, each with capacity 1. A new target is also created, and attached to a red vertex with capacity 2. This is then done for every red vertex until a flow of size 2 is found. For directed graphs, we use the implementation of Many.\\\\
+We were only able to solve problem M (Many) for acyclic graph instances using the Bellman-Ford algorithm. This is because, in generality, this problem is NP-hard.\\
+To see this, consider the Hamiltonian paths problem, which is an NP-hard problem. It can be reduced to Many problem.\\
+Let $g$ be a graph that we must find a Hamiltonian path for, with vertices $V$ and edges $E$. To reduce the Hamiltonian problem to the a many problem, we set $R = V$ ($R$ being the set of red vertices). If the result of many problem is $n$, then the graph has a Hamiltonian path if $n = |V|$.\\
+For acyclic graphs, the problem can be solved by giving each edge a weight and running Bellman-Ford. Every edge going into red vertices gets the weight -1. Every other edge gets a weight of 0. The algorithm finds the shortest path, which will include as many red vertices as possible. This is because paths with as many reds as possible, negative edges, will result in the lowest path value.
 
 \subsection{References}
 \begin{description}
-  \item[1.] \emph{APLgraphlib---A library for Basic Graph Algorithms in APL}, version 2.11, 2016, Iverson Project, {\tt github.com/iverson/APLgraphlib}.\sidenote{If you use references to code, books, or papers, be professional about it. Use whatever style you want, but be consistent.}
-
-  \item[2.] A. Lovelace, \emph{Algorithms and Data Structures in Pascal}, Addison--Wesley 1881. 
+  \item[1.] \emph{JGraphT --- A library for Graphs and Graph Algorithms}, version core-1.2.0, {\tt jgrapht.org/}.
 \end{description}
 
 \end{document}
