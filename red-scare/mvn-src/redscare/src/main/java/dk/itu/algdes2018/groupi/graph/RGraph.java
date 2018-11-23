@@ -11,6 +11,9 @@ import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import org.jgrapht.traverse.BreadthFirstIterator;
+
+import dk.itu.algdes2018.groupi.Main;
+
 import org.jgrapht.alg.shortestpath.BellmanFordShortestPath;
 // import org.jgrapht.alg.shortestpath.NegativeCycleDetectedException;
 
@@ -199,7 +202,7 @@ public class RGraph {
             return gp == null ? -1 : gp.getWeight() * -1;
         }
         catch (Exception e){
-            System.err.println("(This is red text) Negative cycle in graph. There is no solution to the many problem");
+            if(Main.DEBUG) System.err.println("(This is red text) Negative cycle in graph. There is no solution to the many problem");
             // Negative cycle detected
             return -2;
         }
