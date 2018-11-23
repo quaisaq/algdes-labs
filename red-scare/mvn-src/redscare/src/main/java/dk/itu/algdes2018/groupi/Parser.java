@@ -46,6 +46,10 @@ public class Parser{
                 String v1 = sc.next();
                 String dir = sc.next();
                 String v2 = sc.next();
+
+                if(v1.equals(v2)){
+                    continue;   // Skip self-loops
+                }
                 
                 if (dir.equals("->")) { //directed edge from v1 to v2
                     RVertex from = vertices.get(v1);
