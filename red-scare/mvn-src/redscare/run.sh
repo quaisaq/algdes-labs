@@ -1,5 +1,5 @@
 mvn compile
 
-for f in ../../data/*.txt; do
+for f in $@; do
 	mvn exec:java -Dinput=$f
 done
