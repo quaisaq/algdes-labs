@@ -14,9 +14,12 @@ public class NoneSolver implements Solver {
             if(graph.getTarget() == to){
                 RGraph edgeGraph = new RGraph();
                 // Add source and target and edge
+                edgeGraph.addVertex(graph.getSource());
+                edgeGraph.addVertex(graph.getTarget());
+                
                 edgeGraph.setSource(graph.getSource());
                 edgeGraph.setTarget(graph.getTarget());
-                edgeGraph.addEdge(edgeGraph.getSource(), edgeGraph.getTarget());
+                edgeGraph.addEdge(graph.getSource(), graph.getTarget());
 
                 return edgeGraph;
             }
